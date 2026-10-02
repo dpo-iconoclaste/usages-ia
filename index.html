@@ -62,6 +62,22 @@
       overflow-x: auto
     }
 
+    .horizontal-scrollbar {
+      position: fixed;
+      bottom: 0;
+      z-index: 10;
+      height: 18px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      border-top: 1px solid var(--line);
+      background: rgba(238, 241, 245, .98);
+      scrollbar-width: auto
+    }
+
+    .horizontal-scrollbar-content {
+      height: 1px
+    }
+
     table {
       border-collapse: separate;
       border-spacing: 0;
@@ -476,6 +492,10 @@
         overflow: visible
       }
 
+      .horizontal-scrollbar {
+        display: none !important
+      }
+
       thead th {
         position: static
       }
@@ -512,11 +532,11 @@
 
   <script type="application/json" id="data-categories">
     [
-      {"position":1,"id":"anonymisees","title":"Données simples","description":"Données ordinaires, données non sensibles, code informatique général","checked":true},
-      {"position":2,"id":"personnes","title":"Données de personnes","description":"Toutes données relatives à une personne"},
-      {"position":3,"id":"sensibles","title":"Données sensibles (RGPD)","description":"Santé, opinions politiques, convictions religieuses, données biométriques, numéro de sécurité sociale…"},
+      {"position":1,"id":"anonymisees","title":"Données simples","description":"Données ordinaires\nDonnées non sensibles\nCode informatique général","checked":true},
+      {"position":2,"id":"personnes","title":"Données de personnes","description":"Toutes données relatives à une personne physique"},
+      {"position":3,"id":"sensibles","title":"Données sensibles (RGPD)","description":"Santé, opinions politiques, convictions religieuses, données biométriques, numéro de sécurité sociale…\nVoir DPO"},
       {"position":4,"id":"recherche","title":"Données de recherche","description":"Données exploitées dans le cadre d’une activité de recherche"},
-      {"position":5,"id":"zrr","title":"Données de recherche en ZRR","description":"Données de recherche relevant d’une zone à régime restrictif (ZRR); code informatique confidentiel"}
+      {"position":5,"id":"zrr","title":"Données de recherche en ZRR","description":"Données de recherche relevant d’une zone à régime restrictif (ZRR); \nCode informatique confidentiel"}
     ]
   </script>
 
@@ -540,7 +560,7 @@
           <th rowspan="2" class="c">Niveau</th>
           <th rowspan="2">Type d’outil</th>
           <th rowspan="2">Type</th>
-          <th rowspan="2">Garanties contre les risques<small>fuite de données…</small></th>
+          <th rowspan="2">Garanties contre les risques<small>de type Fuite de données…</small></th>
           <th rowspan="2">Performance</th>
           <th colspan="5" class="grp" data-category-group style="text-align: center;">Usages</th>
           <th rowspan="2">Remarques</th>
@@ -555,7 +575,7 @@
 
         <tr>
           <td class="c"><span class="lvl" data-level="1">1</span></td>
-          <td class="tool"><b>Outil local sur le poste de travail</b>
+          <td class="tool"><b>LLM local sur le poste de travail</b>
             <span class="d">Différents modèles et outils</span>
             <div class="links"><a href="https://www.nomic.ai/gpt4all" target="_blank" rel="noopener">GPT4All</a><a
                 href="https://github.com/janhq/jan" target="_blank" rel="noopener">Jan</a><a
@@ -579,16 +599,16 @@
 
         <tr>
           <td class="c"><span class="lvl" data-level="2">2</span></td>
-          <td class="tool"><b>Outil de l’ESR</b>
+          <td class="tool"><b>LLMs de l’ESR</b>
             <span class="d">Différents modèles</span>
-            <div class="links"><a href="https://chat.aristote.education/" target="_blank"
-                rel="noopener">chat.aristote.education</a></div>
+            <span class="links"><a href="https://chat.aristote.education/" target="_blank"
+                rel="noopener">chat.aristote.education</a></span>
+            <span class="d">Egalement API Aristote pour fabriquer des applications spécialisées</span>
           </td>
           <td class="type"><span class="chip">Généraliste</span></td>
           <td class="garanties"><span class="gauge" data-min="7"></span></td>
           <td class="perf">
-            <span class="gauge" data-min="2"></span> à
-            <span class="gauge" data-min="5"></span>
+            <span class="gauge" data-min="2" data-max="6"></span>
             <span class="note">selon le modèle utilisé et le cas d’usage</span>
           </td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
@@ -603,7 +623,7 @@
 
         <tr>
           <td class="c"><span class="lvl" data-level="3">3</span></td>
-          <td class="tool"><b>Outil spécialisé externe, fourni par l’établissement</b>
+          <td class="tool"><b>LLM spécialisé externe, fourni par l’établissement</b>
             <p style="margin-top:6px" class="d">CentraleSupélec : 
               <a href="https://https://delos.so/fr" target="_blank" rel="noopener">Delos</a> (chat et intégration aux outils bureautiques)&nbsp;; 
               <a href="https://www.pigment.com/fr" target="_blank" rel="noopener">Pigment</a> (manipulation de données, visualisation,
@@ -630,12 +650,12 @@
 
         <tr>
           <td class="c"><span class="lvl" data-level="4">4</span></td>
-          <td class="tool"><b>Outil généraliste externe, fourni par l’établissement</b>
-            <span class="d">CNRS : Emmy (modèle : Mistral)<br>ENS : pas encore d’outil</span>
+          <td class="tool"><b>LLM généraliste externe, fourni par l’établissement</b>
+            <span class="d">CNRS : Emmy (modèle : Mistral)<br>CentraleSupélec : pas encore d’outil<br>ENS : pas encore d’outil</span>
           </td>
           <td class="type"><span class="chip">Généraliste</span></td>
           <td class="garanties"><span class="gauge" data-min="5"></span></td>
-          <td class="perf"><span class="gauge" data-min="4"></span></td>
+          <td class="perf"><span class="gauge" data-min="4" data-max="6"></span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
           <td class="data data-category" data-category-col="personnes"><span class="b ok">Oui</span></td>
           <td class="data data-category" data-category-col="sensibles"><span class="b no">Non</span></td>
@@ -646,14 +666,15 @@
 
         <tr>
           <td class="c"><span class="lvl" data-level="5">5</span></td>
-          <td class="tool"><b>Outil généraliste de la sphère publique</b>
-            <span class="d">Modèle : Mistral</span>
-            <div class="links"><a href="https://assistant.numerique.gouv.fr/" target="_blank"
-                rel="noopener">assistant.numerique.gouv.fr</a></div>
+          <td class="tool"><b>LLM généraliste de la sphère publique</b>
+            <span class="d">Chat : Modèle mistral</span>
+            <span class="links"><a href="https://assistant.numerique.gouv.fr/" target="_blank"
+                rel="noopener">assistant.numerique.gouv.fr</a></span>
+            <span class="d">Egalement <a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener">API Albert</a> pour fabriquer des applications spécialisées</span>
           </td>
           <td class="type"><span class="chip">Généraliste</span></td>
           <td class="garanties"><span class="gauge" data-min="4"></span></td>
-          <td class="perf"><span class="gauge" data-min="5"></span></td>
+          <td class="perf"><span class="gauge" data-min="4" data-max="6"></span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
           <td class="data data-category" data-category-col="personnes"><span class="b ok">Oui</span></td>
           <td class="data data-category" data-category-col="sensibles"><span class="b no">Non</span></td>
@@ -661,13 +682,13 @@
           <td class="data data-category" data-category-col="zrr"><span class="b no">Non</span></td>
           <td class="rem">
             <p>Performances à évaluer dans le contexte.</p>
-            <p>Garanties juridiques faibles, seulement formelles, sans cadre de négociation.</p>
+            <p>Garanties juridiques standard, non adaptables au contexte.</p>
           </td>
         </tr>
 
         <tr>
           <td class="c"><span class="lvl" data-level="6">6</span></td>
-          <td class="tool"><b>Outil majeur du marché avec contrat personnel de l’utilisateur</b>
+          <td class="tool"><b>LLM majeur du marché avec contrat personnel de l’utilisateur</b>
             <span class="d">OpenAI / ChatGPT, Anthropic / Claude…</span>
           </td>
           <td class="type"><span class="chip">Généraliste</span></td>
@@ -687,7 +708,7 @@
 
         <tr>
           <td class="c"><span class="lvl" data-level="7">7</span></td>
-          <td class="tool"><b>Outil majeur du marché sans contrat</b>
+          <td class="tool"><b>LLM majeur du marché sans contrat</b>
             <span class="d">OpenAI / ChatGPT, Anthropic / Claude…</span>
           </td>
           <td class="type"><span class="chip">Généraliste</span></td>
@@ -712,7 +733,7 @@
 
         <tr>
           <td class="c"><span class="lvl" data-level="8">8</span></td>
-          <td class="tool"><b>Outil mineur du marché avec ou sans contrat, Shadow IA</b>
+          <td class="tool"><b>LLM mineur du marché avec ou sans contrat, Shadow IA</b>
           </td>
           <td class="type"><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></td>
           <td class="garanties"><span class="gauge" data-min="0"></span></td>
@@ -744,17 +765,21 @@
     </table>
   </div>
 
+  <div class="horizontal-scrollbar" id="horizontal-scrollbar" role="region" aria-label="Défilement horizontal du tableau" tabindex="0" hidden>
+    <div class="horizontal-scrollbar-content" id="horizontal-scrollbar-content"></div>
+  </div>
+
   <div class="legend">
     <span>Jauges (sur 8) :</span>
     <span class="gauge" data-min="2"></span>
     <span class="gauge" data-min="5"></span>
     <span class="gauge" data-min="8"></span>
     <!--span class="gauge" data-min="3" data-max="6"></span-->
-    <!--span>Segments hachurés = fourchette selon le modèle ou le cas d’usage</span-->
+    <span>Segments hachurés = fourchette selon le modèle ou le cas d’usage</span>
     <span><span class="skull"><svg class="skull-icon" aria-hidden="true"><use href="#skull-crossbones-icon"></use></svg></span> = aucune garantie, usage interdit</span>
   </div>
 
-  <footer>Cas d’usage de l’IA – v 2 2026/10/02 – F. Thu, DPO CentraleSupélec et ENS Paris-Saclay,
+  <footer>Cas d’usage de l’IA – v 2.1 2026/10/02 – F. Thu, DPO CentraleSupélec et ENS Paris-Saclay,
     dpo@centralesupelec.fr</footer>
 
   <script>
@@ -820,6 +845,42 @@
       el.style.background = scaleColor(MAX + 1 - Number(el.dataset.level));
     }
 
+    const tableWrap = document.querySelector('.wrap');
+    const horizontalScrollbar = document.querySelector('#horizontal-scrollbar');
+    const horizontalScrollbarContent = document.querySelector('#horizontal-scrollbar-content');
+    let syncingHorizontalScroll = false;
+
+    function updateHorizontalScrollbar() {
+      const bounds = tableWrap.getBoundingClientRect();
+      const hasHorizontalOverflow = tableWrap.scrollWidth > tableWrap.clientWidth + 1;
+      const tableIsVisible = bounds.bottom > 0 && bounds.top < window.innerHeight;
+
+      horizontalScrollbar.hidden = !hasHorizontalOverflow || !tableIsVisible;
+      if (horizontalScrollbar.hidden) return;
+
+      horizontalScrollbar.style.left = bounds.left + 'px';
+      horizontalScrollbar.style.width = tableWrap.clientWidth + 'px';
+      horizontalScrollbarContent.style.width = tableWrap.scrollWidth + 'px';
+      horizontalScrollbar.scrollLeft = tableWrap.scrollLeft;
+    }
+
+    horizontalScrollbar.addEventListener('scroll', () => {
+      if (syncingHorizontalScroll) return;
+      syncingHorizontalScroll = true;
+      tableWrap.scrollLeft = horizontalScrollbar.scrollLeft;
+      syncingHorizontalScroll = false;
+    });
+
+    tableWrap.addEventListener('scroll', () => {
+      if (syncingHorizontalScroll) return;
+      syncingHorizontalScroll = true;
+      horizontalScrollbar.scrollLeft = tableWrap.scrollLeft;
+      syncingHorizontalScroll = false;
+    });
+
+    window.addEventListener('scroll', updateHorizontalScrollbar, { passive: true });
+    window.addEventListener('resize', updateHorizontalScrollbar);
+
     function updateDataColumns() {
       const checkboxes = [...document.querySelectorAll('[data-category]')];
       let selectedCount = 0;
@@ -843,6 +904,7 @@
       group.colSpan = selectedCount;
       group.classList.toggle('is-visible', selectedCount > 0);
       document.querySelector('#selection-hint-row').hidden = selectedCount > 0;
+      updateHorizontalScrollbar();
     }
 
     const dataCategories = JSON.parse(document.querySelector('#data-categories').textContent)
