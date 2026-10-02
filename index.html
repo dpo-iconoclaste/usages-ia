@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classes de LLM / IA et usages admissibles</title>
+<style>
+:root{
+  --ink:#1c2733; --muted:#5d6b7a; --line:#dde3ea; --bg:#eef1f5; --card:#fff;
+  --head:#17324d; --head2:#244766; --data-bg:#f0f6f3; --data-hover:#e4efe9;
+  --ok:#1f7a4d; --ok-bg:#e3f4ea; --warn:#a9500f; --warn-bg:#fdeedd; --no:#a82323; --no-bg:#fbe4e4;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;padding:28px 20px 40px}
+/** header,.wrap,.legend,footer{max-width:1320px;margin:0 auto} *//
+header,.wrap,.legend,footer{margin:0 auto}
+h1{font-size:1.9rem;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);margin:0 0 20px}
+.wrap{background:var(--card);border-radius:12px;box-shadow:0 1px 3px rgba(20,40,60,.12);overflow-x:auto}
+table{border-collapse:separate;border-spacing:0;width:100%;min-width:1120px}
+th,td{padding:12px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+thead th{background:var(--head);color:#fff;font-weight:600;font-size:.88rem;position:sticky;top:0;z-index:2;vertical-align:middle}
+thead th small{display:block;font-weight:400;opacity:.75;margin-top:2px}
+thead tr:first-child th.grp{text-align:center;height:40px;border-bottom:1px solid rgba(255,255,255,.25)}
+thead th.data{background:var(--head2);top:40px;font-weight:500;font-size:.82rem}
+thead th.c{text-align:center}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover td{background:#f6f9fc}
+tbody td.data{background:var(--data-bg)}
+tbody tr:hover td.data{background:var(--data-hover)}
+td.tool{min-width:270px}
+td.tool b{display:block;margin-bottom:3px}
+td.tool .d{color:var(--muted);font-size:.9rem}
+td.rem{min-width:230px;color:#33414f;font-size:.92rem}
+td.rem p,td.tool p{margin:0 0 4px}
+td.c{text-align:center;vertical-align:middle}
+.lvl{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;color:#fff;font-weight:700;font-size:1rem}
+.chip{display:inline-block;padding:2px 10px;border-radius:999px;background:#e8eef5;color:#2b4763;font-size:.82rem;font-weight:600;margin:0 4px 4px 0;white-space:nowrap}
+a{color:#1561a8;text-decoration:none;border-bottom:1px solid rgba(21,97,168,.3)}
+a:hover{border-bottom-color:currentColor}
+.links{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px}
+.links a{font-size:.84rem;background:#eef4fb;border:1px solid #cfe0f2;padding:1px 9px;border-radius:6px}
+/* Jauges */
+.gauge{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+.gauge[data-min="0"]{display:flex;justify-content:center;width:100%}
+.segs{display:inline-flex;gap:3px}
+.seg{width:14px;height:16px;border-radius:3px;background:#e3e8ee}
+.seg.range{border:1.5px solid}
+.num{font-size:.8rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.skull{font-size:1.15rem;line-height:1}
+.note{display:block;margin-top:5px;font-size:.82rem;color:var(--muted)}
+/* Pastilles d'usage */
+.b{display:inline-block;padding:3px 10px;border-radius:8px;font-weight:600;font-size:.88rem}
+.b::before{margin-right:5px;font-weight:700}
+.b.ok{background:var(--ok-bg);color:var(--ok)} .b.ok::before{content:"✓"}
+.b.plus{background:var(--ok);color:#fff} .b.plus::before{content:"✓"}
+.b.warn{background:var(--warn-bg);color:var(--warn)} .b.warn::before{content:"!"}
+.b.no{background:var(--no-bg);color:var(--no)} .b.no::before{content:"✕"}
+.b.no.danger{background:#ff1717;color:#fff}
+.b-note{display:block;margin-top:4px;font-size:.82rem;color:var(--muted)}
+.legend{margin-top:16px;display:flex;flex-wrap:wrap;gap:10px 28px;font-size:.88rem;color:var(--muted);align-items:center}
+.legend .gauge{gap:6px}
+footer{margin-top:18px;color:var(--muted);font-size:.85rem;font-style:italic}
+@media print{body{background:#fff;padding:0}.wrap{box-shadow:none;overflow:visible}thead th{position:static}@page{size:landscape;margin:12mm}}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Classes de LLM / IA et usages admissibles</h1>
+  <p class="sub">Quel outil pour quel type de données ?</p>
+</header>
+
+<div class="wrap">
+<table>
+  <thead>
+    <tr>
+      <th rowspan="2" class="c">Niveau</th>
+      <th rowspan="2">Type d’outil</th>
+      <th rowspan="2">Type</th>
+      <th rowspan="2">Garanties contre les risques<small>fuite de données…</small></th>
+      <th rowspan="2">Performance</th>
+      <th colspan="3" class="grp">Usages</th>
+      <th rowspan="2">Remarques</th>
+    </tr>
+    <tr>
+      <th class="data">Données de personnes</th>
+      <th class="data">Données sensibles<small>santé, religieux, politique ; n° de Sécu…</small></th>
+      <th class="data">Données anonymisées,<br>Données non sensibles,<br>Code informatique</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="1">1</span></td>
+      <td class="tool"><b>Outil local sur le poste de travail</b>
+        <span class="d">Différents modèles et outils</span>
+        <div class="links"><a href="https://www.nomic.ai/gpt4all" target="_blank" rel="noopener">GPT4All</a><a href="https://github.com/janhq/jan" target="_blank" rel="noopener">Jan</a><a href="https://ai-explorer.io/blog/lm-studio-tutoriel-installation-utilisation/" target="_blank" rel="noopener">LLM Studio</a></div></td>
+      <td><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></td>
+      <td><span class="gauge" data-min="4"></span> à <span class="gauge" data-min="8"></span></td>
+      <td>Variable<span class="note">↗ en hausse</span></td>
+      <td class="data"><span class="b plus">Oui +</span></td>
+      <td class="data"><span class="b plus">Oui +</span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="rem">Encore embryonnaire, demande une machine solide et des compétences techniques ; amené à se développer.
+        <div class="links"><a href="https://ai-explorer.io/blog/installer-ia-en-local-guide-complet-2026/" target="_blank" rel="noopener">Guide d’installation en local</a></div></td>
+    </tr>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="2">2</span></td>
+      <td class="tool"><b>Outil de l’ESR</b>
+        <span class="d">Différents modèles</span>
+        <div class="links"><a href="https://chat.aristote.education/" target="_blank" rel="noopener">chat.aristote.education</a></div></td>
+      <td><span class="chip">Généraliste</span></td>
+      <td><span class="gauge" data-min="7"></span></td>
+      <td>
+        <span class="gauge" data-min="2"></span> à 
+        <span class="gauge" data-min="5"></span>
+        <span class="note">selon le modèle utilisé et le cas d’usage</span>
+      </td>
+      <td class="data"><span class="b plus">Oui +</span></td>
+      <td class="data"><span class="b warn">Éviter</span><span class="b-note">sauf validation juridique / DPO</span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="rem">Ne pas hésiter à comparer les modèles proposés, voire à demander l’ajout de nouveaux modèles.</td>
+    </tr>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="3">3</span></td>
+      <td class="tool"><b>Outil spécialisé fourni par l’établissement</b>
+        <span class="d">Outils d’OCR, de transcription, d’aide au codage…</span>
+        <p style="margin-top:6px" class="d">ENS : <a href="https://www.dicte.ai/fr-fr" target="_blank" rel="noopener">Dicte</a> (transcriptions, CR)</p></td>
+      <td><span class="chip">Spécialisé</span></td>
+      <td><span class="gauge" data-min="5"></span></td>
+      <td><span class="gauge" data-min="5"></span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="data"><span class="b warn">Non</span><span class="b-note">sauf conditions spéciales + validation juridique / DPO</span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="rem"><p>Outils généralement assez puissants, avec des garanties juridiques solides.</p><p>Conditions spéciales : par exemple recherche hospitalière.</p></td>
+    </tr>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="4">4</span></td>
+      <td class="tool"><b>Outil généraliste fourni par l’établissement</b>
+        <span class="d">CNRS : Emmy (modèle : Mistral)<br>ENS : pas encore d’outil</span></td>
+      <td><span class="chip">Généraliste</span></td>
+      <td><span class="gauge" data-min="5"></span></td>
+      <td><span class="gauge" data-min="4"></span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="data"><span class="b no">Non</span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="rem">Outils généralement assez puissants, avec des garanties juridiques solides.</td>
+    </tr>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="5">5</span></td>
+      <td class="tool"><b>Outil généraliste de la sphère publique</b>
+        <span class="d">Modèle : Mistral</span>
+        <div class="links"><a href="https://assistant.numerique.gouv.fr/" target="_blank" rel="noopener">assistant.numerique.gouv.fr</a></div></td>
+      <td><span class="chip">Généraliste</span></td>
+      <td><span class="gauge" data-min="4"></span></td>
+      <td><span class="gauge" data-min="5"></span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="data"><span class="b no">Non</span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="rem"><p>Performances à évaluer dans le contexte.</p><p>Garanties juridiques faibles, seulement formelles, sans cadre de négociation.</p></td>
+    </tr>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="6">6</span></td>
+      <td class="tool"><b>Outil majeur du marché avec contrat personnel de l’utilisateur</b>
+        <span class="d">OpenAI / ChatGPT, Anthropic / Claude…</span></td>
+      <td><span class="chip">Généraliste</span></td>
+      <td><span class="gauge" data-min="2"></span></td>
+      <td><span class="gauge" data-min="8"></span></td>
+      <td class="data"><span class="b no">Non</span></td>
+      <td class="data"><span class="b no danger">Non ☠️</span></td>
+      <td class="data"><span class="b ok">Oui</span></td>
+      <td class="rem">Performants, mais cadre juridique très peu protecteur.</td>
+    </tr>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="7">7</span></td>
+      <td class="tool"><b>Outil majeur du marché sans contrat</b>
+        <span class="d">OpenAI / ChatGPT, Anthropic / Claude…</span></td>
+      <td><span class="chip">Généraliste</span></td>
+      <td><span class="gauge" data-min="1"></span></td>
+      <td><span class="gauge" data-min="8"></span></td>
+      <td class="data"><span class="b no danger">Non ☠️</span></td>
+      <td class="data"><span class="b no danger">Non ☠️</span></td>
+      <td class="data"><span class="b warn">En l’absence de toute autre solution</span></td>
+      <td class="rem"><p>Performants.</p><p>Considérer que le cadre juridique n’existe pas = aucune garantie.</p></td>
+    </tr>
+
+    <tr>
+      <td class="c"><span class="lvl" data-level="8">8</span></td>
+      <td class="tool"><b>Outil mineur du marché</b>
+        <span class="d">ou outil non UE, non USA</span></td>
+      <td><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></td>
+      <td><span class="gauge" data-min="0"></span></td>
+      <td><span class="gauge" data-min="0"></span></td>
+      <td class="data"><span class="b no danger">Non ☠️</span></td>
+      <td class="data"><span class="b no danger">Non ☠️</span></td>
+      <td class="data"><span class="b no danger">Non ☠️</span></td>
+      <td class="rem">Par défaut, considérer que ce site aspirera toutes vos données. Sauf cas exceptionnel et validation de l’établissement.</td>
+    </tr>
+
+  </tbody>
+</table>
+</div>
+
+<div class="legend">
+  <span>Jauges (sur 8) :</span>
+  <span class="gauge" data-min="2"></span>
+  <span class="gauge" data-min="5"></span>
+  <span class="gauge" data-min="8"></span>
+  <!--span class="gauge" data-min="3" data-max="6"></span-->
+  <!--span>Segments hachurés = fourchette selon le modèle ou le cas d’usage</span-->
+  <span><span class="skull">☠️</span> = aucune garantie, usage interdit</span>
+</div>
+
+<footer>Cas d’usage de l’IA – v0.8 2026/09/30 – F. Thu, DPO CentraleSupélec et ENS Paris-Saclay, fthu@centralesupelec.fr</footer>
+
+<script>
+// ---- Réglages des jauges (modifiables) ----
+const MAX = 8;                       // nombre d'étoiles maximal = nombre de segments
+const STOPS = [[205,60,60],[233,162,59],[46,158,91]]; // rouge -> orange -> vert
+
+// Couleur d'une valeur : 1 = rouge, MAX = vert
+function scaleColor(v){
+  const t = Math.max(0, Math.min(1, (v - 1) / (MAX - 1)));
+  const [a, b, u] = t < 0.5 ? [STOPS[0], STOPS[1], t * 2] : [STOPS[1], STOPS[2], (t - 0.5) * 2];
+  return 'rgb(' + a.map((x, i) => Math.round(x + (b[i] - x) * u)).join(',') + ')';
+}
+
+// Dessine une jauge dans un élément <span class="gauge" data-min="4" data-max="8">
+function renderGauge(el){
+  const min = +el.dataset.min;
+  const max = el.dataset.max ? +el.dataset.max : min;
+  const label = min === 0 ? 'Aucune garantie'
+              : (min === max ? min : min + ' à ' + max) + ' sur ' + MAX;
+  el.setAttribute('role', 'img');
+  el.setAttribute('aria-label', label);
+  el.textContent = '';
+
+  if (min === 0) {
+    const s = document.createElement('span');
+    s.className = 'skull'; s.textContent = '☠️';
+    el.appendChild(s);
+  }
+  const segs = document.createElement('span');
+  segs.className = 'segs';
+  for (let i = 1; i <= MAX; i++) {
+    const seg = document.createElement('span');
+    seg.className = 'seg';
+    if (i <= min) {
+      seg.style.background = scaleColor(min);
+    } else if (i <= max) {
+      const c = scaleColor(max);
+      seg.className += ' range';
+      seg.style.borderColor = c;
+      seg.style.background = 'repeating-linear-gradient(45deg,' + c + ' 0 3px,transparent 3px 6px)';
+    }
+    if (min) {segs.appendChild(seg)};
+  }
+  el.appendChild(segs);
+  if (min > 0) {
+    const n = document.createElement('span');
+    n.className = 'num';
+    n.textContent = min === max ? min + '/' + MAX : min + '–' + max + '/' + MAX;
+    el.appendChild(n);
+  }
+}
+
+// Pastille de niveau : niveau 1 = vert (le plus recommandé), niveau 8 = rouge
+function renderLevel(el){
+  el.style.background = scaleColor(MAX + 1 - Number(el.dataset.level));
+}
+
+document.querySelectorAll('.gauge').forEach(renderGauge);
+document.querySelectorAll('.lvl').forEach(renderLevel);
+</script>
+</body>
+</html>
