@@ -111,7 +111,9 @@
       background: var(--card);
       border-radius: 12px;
       box-shadow: 0 1px 3px rgba(20, 40, 60, .12);
-      overflow-x: auto
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 80vh
     }
 
     .horizontal-scrollbar:focus {
@@ -135,8 +137,7 @@
     }
 
     table {
-      border-collapse: separate;
-      border-spacing: 0;
+      border-collapse: collapse;
       width: 100%;
       min-width: 1420px
     }
@@ -156,8 +157,21 @@
       font-size: .88rem;
       position: sticky;
       top: 0;
-      z-index: 2;
+      z-index: 10;
       vertical-align: middle
+    }
+
+    /* Première colonne et en-tête fixes à l'horizontale */
+    thead th.c:first-of-type {
+      left: 0;
+      z-index: 11
+    }
+
+    td.level-type {
+      position: sticky;
+      left: 0;
+      z-index: 5;
+      background: var(--card)
     }
 
     thead th small {
@@ -184,7 +198,7 @@
       top: 0;
       padding: 10px 14px;
       background: var(--head2);
-      z-index: 4
+      z-index: 10
     }
 
     thead th[data-category-col].category-edge-left {
