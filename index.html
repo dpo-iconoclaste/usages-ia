@@ -752,13 +752,14 @@
             <div class="type-chips"><span class="chip">Spécialisé</span></div>
           </td>
           <td class="tool"><b>LLM spécialisé externe, fourni par l’établissement</b>
+            <p style="margin-top:6px" class="d">CentraleSupélec, ENS :
+              <a href="https://www.pigment.com/fr" target="_blank" rel="noopener">Pigment</a> (manipulation de données,
+              visualisation, analyse)&nbsp;;
+            </p>
             <p style="margin-top:6px" class="d">CentraleSupélec : 
               <a href="https://https://delos.so/fr" target="_blank" rel="noopener">Delos</a> (chat et intégration aux outils bureautiques)&nbsp;; 
-              <a href="https://www.pigment.com/fr" target="_blank" rel="noopener">Pigment</a> (manipulation de données, visualisation,
-              analyse)
             </p>
             <p style="margin-top:6px" class="d">ENS : 
-              <a href="https://www.pigment.com/fr" target="_blank" rel="noopener">Pigment</a> (manipulation de données, visualisation, analyse)&nbsp;;
               <a href="https://www.dicte.ai/fr-fr" target="_blank" rel="noopener">Dicte</a> (transcriptions, CR)
             </p>
           </td>
@@ -924,10 +925,19 @@
     const STOPS = [[205, 60, 60], [233, 162, 59], [46, 158, 91]]; // rouge -> orange -> vert
 
     // Couleur d'une valeur : 1 = rouge, MAX = vert
+    // Retourne { bg, fg } avec fg = blanc ou noir selon le contraste nécessaire
     function scaleColor(v) {
       const t = Math.max(0, Math.min(1, (v - 1) / (MAX - 1)));
       const [a, b, u] = t < 0.5 ? [STOPS[0], STOPS[1], t * 2] : [STOPS[1], STOPS[2], (t - 0.5) * 2];
-      return 'rgb(' + a.map((x, i) => Math.round(x + (b[i] - x) * u)).join(',') + ')';
+      const r = Math.round(a[0] + (b[0] - a[0]) * u);
+      const g = Math.round(a[1] + (b[1] - a[1]) * u);
+      const bl = Math.round(a[2] + (b[2] - a[2]) * u);
+      // Luminance relative (WCAG 2.x)
+      const lum = 0.2126 * (r / 255) + 0.7152 * (g / 255) + 0.0722 * (bl / 255);
+      // Blanc sur fond sombre, noir sur fond clair
+      // ~0.22 = luminance où le contraste blanc ≈ 4.5:1 (seuil WCAG AA)
+      const fg = lum > 0.22 ? '#1c2733' : '#ffffff';
+      return { bg: 'rgb(' + r + ',' + g + ',' + bl + ')', fg: fg };
     }
 
     // Dessine une jauge dans un élément <span class="gauge" data-min="4" data-max="8">
@@ -960,12 +970,12 @@
         const seg = document.createElement('span');
         seg.className = 'seg';
         if (i <= min) {
-          seg.style.background = scaleColor(min);
+          seg.style.background = scaleColor(min).bg;
         } else if (i <= max) {
           const c = scaleColor(max);
           seg.className += ' range';
-          seg.style.borderColor = c;
-          seg.style.background = 'repeating-linear-gradient(45deg,' + c + ' 0 3px,transparent 3px 6px)';
+          seg.style.borderColor = c.bg;
+          seg.style.background = 'repeating-linear-gradient(45deg,' + c.bg + ' 0 3px,transparent 3px 6px)';
         }
         if (min) { segs.appendChild(seg) };
       }
@@ -980,7 +990,9 @@
 
     // Pastille de niveau : niveau 1 = vert (le plus recommandé), niveau 8 = rouge
     function renderLevel(el) {
-      el.style.background = scaleColor(MAX + 1 - Number(el.dataset.level));
+      const c = scaleColor(MAX + 1 - Number(el.dataset.level));
+      el.style.background = c.bg;
+      el.style.color = c.fg;
     }
 
     const tableWrap = document.querySelector('.wrap');
