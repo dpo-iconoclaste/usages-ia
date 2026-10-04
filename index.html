@@ -55,6 +55,58 @@
       margin: 0 0 20px
     }
 
+    /* ---- Accessibilité : lien d'ouverture rapide ---- */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--head);
+      color: #fff;
+      padding: 8px 16px;
+      font-size: 1rem;
+      font-weight: 600;
+      z-index: 100;
+      text-decoration: none;
+    }
+    .skip-link:focus {
+      left: 0;
+      outline: 3px solid #72c492;
+      outline-offset: 2px;
+    }
+
+    /* ---- Accessibilité : focus visible sur les cases à cocher ---- */
+    .data-option input[type="checkbox"] {
+      cursor: pointer;
+    }
+    .data-option input[type="checkbox"]:focus {
+      outline: 3px solid #1561a8;
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* ---- Accessibilité : préférence de mouvement réduit ---- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ---- Accessibilité : classe utilitaire pour masquer visuellement ---- */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
     .wrap {
       background: var(--card);
       border-radius: 12px;
@@ -127,7 +179,8 @@
     thead tr.data-controls th {
       top: 0;
       padding: 10px 14px;
-      background: var(--head2)
+      background: var(--head2);
+      z-index: 4
     }
 
     thead th[data-category-col].category-edge-left {
@@ -141,8 +194,10 @@
     .data-controls-content {
       display: flex;
       align-items: center;
-      gap: 24px;
-      min-width: 1350px
+      flex-wrap: wrap;
+      gap: 12px;
+      width: 100%;
+      max-width: calc(100vw - 68px)
     }
 
     .data-controls-title {
@@ -153,16 +208,18 @@
     .data-options {
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 16px;
-      flex: 1
+      flex: 1 1 600px;
+      min-width: 0
     }
 
     .data-option {
       display: flex;
       align-items: center;
       gap: 7px;
-      flex: 1;
-      min-width: 0;
+      flex: 1 1 150px;
+      min-width: 120px;
       font-weight: 500;
       line-height: 1.25;
       cursor: pointer
@@ -176,6 +233,10 @@
       flex: 0 0 auto
     }
 
+    .data-option-title {
+      min-width: 0
+    }
+
     .data-info {
       display: inline-grid;
       place-items: center;
@@ -187,6 +248,42 @@
       font-weight: 700;
       flex: 0 0 auto;
       cursor: help
+    }
+
+    .data-option-title .data-info {
+      margin-left: 4px;
+      vertical-align: middle
+    }
+
+    .data-info:focus {
+      outline: 2px solid #1561a8;
+      outline-offset: 2px;
+    }
+
+    /* Info tooltip visible on hover/focus */
+    .data-info[tabindex]:focus,
+    .data-info[tabindex]:hover {
+      position: relative;
+    }
+    .data-info[tabindex]:focus::after,
+    .data-info[tabindex]:hover::after {
+      content: attr(aria-label);
+      position: absolute;
+      top: 130%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--head);
+      color: #fff;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: .75rem;
+      font-weight: 400;
+      white-space: pre-wrap;
+      width: max-content;
+      max-width: 250px;
+      z-index: 100;
+      pointer-events: none;
+      line-height: 1.4;
     }
 
     .data-header-content {
@@ -212,10 +309,13 @@
       min-width: 170px
     }
 
-    td.type,
     td.garanties,
     td.perf {
       min-width: 125px
+    }
+
+    td.level-type {
+      min-width: 150px
     }
 
     [hidden] {
@@ -298,6 +398,18 @@
       color: #fff;
       font-weight: 700;
       font-size: 1rem
+    }
+
+    .type-chips {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 8px
+    }
+
+    .type-chips .chip {
+      margin: 0
     }
 
     .chip {
@@ -510,6 +622,12 @@
 
 <body>
 
+  <!-- Lien d'ouverture rapide pour l'accessibilité -->
+  <a href="#main-table" class="skip-link">Aller au tableau</a>
+
+  <!-- Région live pour les annonces dynamiques -->
+  <div id="aria-live-region" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
   <!-- Wikimedia Commons, Skull and Crossbones.svg, public domain. -->
   <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
     <symbol id="skull-crossbones-icon" viewBox="0 0 510 490">
@@ -546,10 +664,11 @@
   </header>
 
   <div class="wrap">
-    <table>
+    <table aria-describedby="table-legend">
+      <caption>Classement des outils LLM/IA selon le niveau de sensibilité des données qu'ils peuvent traiter</caption>
       <thead>
         <tr class="data-controls">
-          <th colspan="11">
+          <th colspan="10">
             <div class="data-controls-content">
               <span class="data-controls-title">Données exploitées</span>
               <div class="data-options" id="data-options"></div>
@@ -557,24 +676,26 @@
           </th>
         </tr>
         <tr>
-          <th rowspan="2" class="c">Niveau</th>
-          <th rowspan="2">Type d’outil</th>
-          <th rowspan="2">Type</th>
-          <th rowspan="2">Garanties contre les risques<small>de type Fuite de données…</small></th>
-          <th rowspan="2">Performance</th>
-          <th colspan="5" class="grp" data-category-group style="text-align: center;">Usages</th>
-          <th rowspan="2">Remarques</th>
+          <th rowspan="2" class="c" scope="col">Niveau - Type</th>
+          <th rowspan="2" scope="col">Type d’outil</th>
+          <th rowspan="2" scope="col">Garanties contre les risques<small>de type Fuite de données…</small></th>
+          <th rowspan="2" scope="col">Performance</th>
+          <th colspan="5" class="grp" data-category-group style="text-align: center;" scope="col">Usages</th>
+          <th rowspan="2" scope="col">Remarques</th>
         </tr>
         <tr id="data-category-headers"></tr>
       </thead>
       <tbody>
 
         <tr id="selection-hint-row">
-          <td class="selection-hint" colspan="11">Sélectionnez une ou plusieurs catégories de données</td>
+          <td class="selection-hint" colspan="10">Sélectionnez une ou plusieurs catégories de données</td>
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="1">1</span></td>
+          <td class="c level-type" id="main-table">
+            <span class="lvl" data-level="1">1</span>
+            <div class="type-chips"><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></div>
+          </td>
           <td class="tool"><b>LLM local sur le poste de travail</b>
             <span class="d">Différents modèles et outils</span>
             <div class="links"><a href="https://www.nomic.ai/gpt4all" target="_blank" rel="noopener">GPT4All</a><a
@@ -582,7 +703,6 @@
                 href="https://ai-explorer.io/blog/lm-studio-tutoriel-installation-utilisation/" target="_blank"
                 rel="noopener">LLM Studio</a></div>
           </td>
-          <td class="type"><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></td>
           <td class="garanties"><span class="gauge" data-min="4"></span> à <span class="gauge" data-min="8"></span></td>
           <td class="perf">Variable<span class="note">↗ en hausse</span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
@@ -598,14 +718,15 @@
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="2">2</span></td>
-          <td class="tool"><b>LLMs de l’ESR</b>
-            <span class="d">Différents modèles</span>
-            <span class="links"><a href="https://chat.aristote.education/" target="_blank"
-                rel="noopener">chat.aristote.education</a></span>
-            <span class="d">Egalement API Aristote pour fabriquer des applications spécialisées</span>
+          <td class="c level-type">
+            <span class="lvl" data-level="2">2</span>
+            <div class="type-chips"><span class="chip">Généraliste</span></div>
           </td>
-          <td class="type"><span class="chip">Généraliste</span></td>
+          <td class="tool"><b>LLMs de l’ESR</b>
+            <span class="links"><a href="https://chat.aristote.education/" target="_blank"
+                rel="noopener">chat.aristote.education</a><span class="d">Différents modèles</span></span>
+            <span class="d">Propose une API pour fabriquer des applications spécialisées</span>
+          </td>
           <td class="garanties"><span class="gauge" data-min="7"></span></td>
           <td class="perf">
             <span class="gauge" data-min="2" data-max="6"></span>
@@ -622,7 +743,10 @@
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="3">3</span></td>
+          <td class="c level-type">
+            <span class="lvl" data-level="3">3</span>
+            <div class="type-chips"><span class="chip">Spécialisé</span></div>
+          </td>
           <td class="tool"><b>LLM spécialisé externe, fourni par l’établissement</b>
             <p style="margin-top:6px" class="d">CentraleSupélec : 
               <a href="https://https://delos.so/fr" target="_blank" rel="noopener">Delos</a> (chat et intégration aux outils bureautiques)&nbsp;; 
@@ -634,7 +758,6 @@
               <a href="https://www.dicte.ai/fr-fr" target="_blank" rel="noopener">Dicte</a> (transcriptions, CR)
             </p>
           </td>
-            <td class="type"><span class="chip">Spécialisé</span></td>
             <td class="garanties"><span class="gauge" data-min="5"></span></td>
             <td class="perf"><span class="gauge" data-min="5"></span></td>
             <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
@@ -649,11 +772,13 @@
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="4">4</span></td>
+          <td class="c level-type">
+            <span class="lvl" data-level="4">4</span>
+            <div class="type-chips"><span class="chip">Généraliste</span></div>
+          </td>
           <td class="tool"><b>LLM généraliste externe, fourni par l’établissement</b>
             <span class="d">CNRS : Emmy (modèle : Mistral)<br>CentraleSupélec : pas encore d’outil<br>ENS : pas encore d’outil</span>
           </td>
-          <td class="type"><span class="chip">Généraliste</span></td>
           <td class="garanties"><span class="gauge" data-min="5"></span></td>
           <td class="perf"><span class="gauge" data-min="4" data-max="6"></span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
@@ -665,14 +790,15 @@
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="5">5</span></td>
-          <td class="tool"><b>LLM généraliste de la sphère publique</b>
-            <span class="d">Chat : Modèle mistral</span>
-            <span class="links"><a href="https://assistant.numerique.gouv.fr/" target="_blank"
-                rel="noopener">assistant.numerique.gouv.fr</a></span>
-            <span class="d">Egalement <a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener">API Albert</a> pour fabriquer des applications spécialisées</span>
+          <td class="c level-type">
+            <span class="lvl" data-level="5">5</span>
+            <div class="type-chips"><span class="chip">Généraliste</span></div>
           </td>
-          <td class="type"><span class="chip">Généraliste</span></td>
+          <td class="tool"><b>LLM généraliste de la sphère publique</b>
+            <span class="links"><a href="https://assistant.numerique.gouv.fr/" target="_blank"
+                rel="noopener">assistant.numerique.gouv.fr</a> <span class="d">Chat : Modèle mistral</span></span>
+            <span class="d">Propose l'<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank" rel="noopener">API Albert</a> pour fabriquer des applications spécialisées</span>
+          </td>
           <td class="garanties"><span class="gauge" data-min="4"></span></td>
           <td class="perf"><span class="gauge" data-min="4" data-max="6"></span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
@@ -687,11 +813,13 @@
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="6">6</span></td>
+          <td class="c level-type">
+            <span class="lvl" data-level="6">6</span>
+            <div class="type-chips"><span class="chip">Généraliste</span></div>
+          </td>
           <td class="tool"><b>LLM majeur du marché avec contrat personnel de l’utilisateur</b>
             <span class="d">OpenAI / ChatGPT, Anthropic / Claude…</span>
           </td>
-          <td class="type"><span class="chip">Généraliste</span></td>
           <td class="garanties"><span class="gauge" data-min="2"></span></td>
           <td class="perf"><span class="gauge" data-min="8"></span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
@@ -707,11 +835,13 @@
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="7">7</span></td>
+          <td class="c level-type">
+            <span class="lvl" data-level="7">7</span>
+            <div class="type-chips"><span class="chip">Généraliste</span></div>
+          </td>
           <td class="tool"><b>LLM majeur du marché sans contrat</b>
             <span class="d">OpenAI / ChatGPT, Anthropic / Claude…</span>
           </td>
-          <td class="type"><span class="chip">Généraliste</span></td>
           <td class="garanties"><span class="gauge" data-min="1"></span></td>
           <td class="perf"><span class="gauge" data-min="8"></span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b warn">En l’absence de toute autre solution</span></td>
@@ -732,10 +862,12 @@
         </tr>
 
         <tr>
-          <td class="c"><span class="lvl" data-level="8">8</span></td>
+          <td class="c level-type">
+            <span class="lvl" data-level="8">8</span>
+            <div class="type-chips"><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></div>
+          </td>
           <td class="tool"><b>LLM mineur du marché avec ou sans contrat, Shadow IA</b>
           </td>
-          <td class="type"><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></td>
           <td class="garanties"><span class="gauge" data-min="0"></span></td>
           <td class="perf"><span class="gauge" data-min="0"></span></td>
           <td class="data data-category" data-category-col="anonymisees"><span class="b no danger">Non <svg class="skull-icon" aria-hidden="true"><use href="#skull-crossbones-icon"></use></svg></span></td>
@@ -769,12 +901,12 @@
     <div class="horizontal-scrollbar-content" id="horizontal-scrollbar-content"></div>
   </div>
 
-  <div class="legend">
+  <div class="legend" id="table-legend">
     <span>Jauges (sur 8) :</span>
     <span class="gauge" data-min="2"></span>
     <span class="gauge" data-min="5"></span>
     <span class="gauge" data-min="8"></span>
-    <!--span class="gauge" data-min="3" data-max="6"></span-->
+    <span class="gauge" data-min="3" data-max="6"></span>
     <span>Segments hachurés = fourchette selon le modèle ou le cas d’usage</span>
     <span><span class="skull"><svg class="skull-icon" aria-hidden="true"><use href="#skull-crossbones-icon"></use></svg></span> = aucune garantie, usage interdit</span>
   </div>
@@ -798,8 +930,10 @@
     function renderGauge(el) {
       const min = +el.dataset.min;
       const max = el.dataset.max ? +el.dataset.max : min;
-      const label = min === 0 ? 'Aucune garantie'
-        : (min === max ? min : min + ' à ' + max) + ' sur ' + MAX;
+      const label = min === 0 ? 'Aucune garantie de sécurité sur 8 – usage déconseillé'
+        : (min === max
+          ? 'Niveau de sécurité : ' + min + ' sur 8'
+          : 'Niveau de sécurité : de ' + min + ' à ' + max + ' sur 8');
       el.setAttribute('role', 'img');
       el.setAttribute('aria-label', label);
       el.textContent = '';
@@ -904,6 +1038,17 @@
       group.colSpan = selectedCount;
       group.classList.toggle('is-visible', selectedCount > 0);
       document.querySelector('#selection-hint-row').hidden = selectedCount > 0;
+
+      // Annonce pour les lecteurs d'écran
+      const liveRegion = document.getElementById('aria-live-region');
+      if (liveRegion && selectedCount > 0) {
+        const checked = [...document.querySelectorAll('[data-category]:checked')]
+          .map(cb => cb.closest('label').textContent.trim());
+        liveRegion.textContent = 'Colonnes affichées : ' + checked.join(', ') + '. ' + selectedCount + ' catégorie' + (selectedCount > 1 ? 's' : '') + ' sélectionnée' + (selectedCount > 1 ? 's' : '');
+      } else if (liveRegion) {
+        liveRegion.textContent = 'Aucune catégorie sélectionnée. Veuillez sélectionner au moins une catégorie de données pour afficher les résultats.';
+      }
+
       updateHorizontalScrollbar();
     }
 
@@ -922,17 +1067,18 @@
       checkbox.checked = Boolean(category.checked);
       label.append(checkbox);
 
+      const title = document.createElement('span');
+      title.className = 'data-option-title';
+      title.textContent = category.title;
+
       const optionInfo = document.createElement('span');
       optionInfo.className = 'data-info';
-      optionInfo.title = category.description;
       optionInfo.setAttribute('aria-label', category.description);
+      optionInfo.setAttribute('tabindex', '0');
       optionInfo.textContent = 'i';
-      label.append(optionInfo);
-
-      const title = document.createElement('span');
-      title.textContent = category.title;
+      title.append(optionInfo);
       label.append(title);
-      label.append(optionInfo);
+
       dataOptions.append(label);
 
       const header = document.createElement('th');
@@ -949,8 +1095,8 @@
 
       const headerInfo = document.createElement('span');
       headerInfo.className = 'data-info';
-      headerInfo.title = category.description;
       headerInfo.setAttribute('aria-label', category.description);
+      headerInfo.setAttribute('tabindex', '0');
       headerInfo.textContent = 'i';
       headerContent.append(headerInfo);
 
