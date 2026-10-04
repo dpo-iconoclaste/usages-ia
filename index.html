@@ -8,7 +8,7 @@
   <style>
     :root {
       --ink: #1c2733;
-      --muted: #5d6b7a;
+      --muted: #4a5563;
       --line: #dde3ea;
       --bg: #eef1f5;
       --card: #fff;
@@ -114,6 +114,10 @@
       overflow-x: auto
     }
 
+    .horizontal-scrollbar:focus {
+      outline: 3px solid #1561a8;
+      outline-offset: -3px;
+    }
     .horizontal-scrollbar {
       position: fixed;
       bottom: 0;
@@ -221,7 +225,7 @@
       flex: 1 1 150px;
       min-width: 120px;
       font-weight: 500;
-      line-height: 1.25;
+      line-height: 1.5;
       cursor: pointer
     }
 
@@ -1058,11 +1062,15 @@
     const dataCategoryHeaders = document.querySelector('#data-category-headers');
 
     dataCategories.forEach((category) => {
+      const checkboxId = 'data-check-' + category.id;
+
       const label = document.createElement('label');
       label.className = 'data-option';
+      label.setAttribute('for', checkboxId);
 
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
+      checkbox.id = checkboxId;
       checkbox.dataset.category = category.id;
       checkbox.checked = Boolean(category.checked);
       label.append(checkbox);
@@ -1074,6 +1082,7 @@
       const optionInfo = document.createElement('span');
       optionInfo.className = 'data-info';
       optionInfo.setAttribute('aria-label', category.description);
+      optionInfo.setAttribute('role', 'button');
       optionInfo.setAttribute('tabindex', '0');
       optionInfo.textContent = 'i';
       title.append(optionInfo);
@@ -1083,6 +1092,7 @@
 
       const header = document.createElement('th');
       header.className = 'data';
+      header.scope = 'col';
       header.dataset.categoryCol = category.id;
 
       const headerContent = document.createElement('span');
@@ -1096,6 +1106,7 @@
       const headerInfo = document.createElement('span');
       headerInfo.className = 'data-info';
       headerInfo.setAttribute('aria-label', category.description);
+      headerInfo.setAttribute('role', 'button');
       headerInfo.setAttribute('tabindex', '0');
       headerInfo.textContent = 'i';
       headerContent.append(headerInfo);
