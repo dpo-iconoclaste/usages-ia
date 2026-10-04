@@ -935,8 +935,8 @@
       // Luminance relative (WCAG 2.x)
       const lum = 0.2126 * (r / 255) + 0.7152 * (g / 255) + 0.0722 * (bl / 255);
       // Blanc sur fond sombre, noir sur fond clair
-      // ~0.22 = luminance où le contraste blanc ≈ 4.5:1 (seuil WCAG AA)
-      const fg = lum > 0.22 ? '#1c2733' : '#ffffff';
+      // ~0.18 = luminance où le contraste bascule entre blanc et noir
+      const fg = lum > 0.18 ? '#000000' : '#ffffff';
       return { bg: 'rgb(' + r + ',' + g + ',' + bl + ')', fg: fg };
     }
 
