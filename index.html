@@ -5,6 +5,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Classes de LLM / IA et usages admissibles</title>
+  <meta name="description" content="Classes de LLM / IA et usages admissibles : quel outil pour quel type de données ?">
+  <meta property="og:title" content="Classes de LLM / IA et usages admissibles">
+  <meta property="og:description" content="Classes de LLM / IA et usages admissibles : quel outil pour quel type de données ?">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
   <style>
     :root {
       --ink: #1c2733;
@@ -266,7 +271,8 @@
       min-width: 120px;
       font-weight: 500;
       line-height: 1.5;
-      cursor: pointer
+      cursor: pointer;
+      position: relative
     }
 
     .data-option input {
@@ -291,7 +297,13 @@
       font-size: .72rem;
       font-weight: 700;
       flex: 0 0 auto;
-      cursor: help
+      cursor: help;
+      padding: 0;
+      color: inherit;
+      background: transparent;
+      font-family: inherit;
+      line-height: 1;
+      appearance: none
     }
 
     .data-option-title .data-info {
@@ -304,15 +316,14 @@
       outline-offset: 2px;
     }
 
-    /* Info tooltip visible on hover/focus */
-    .data-info[tabindex]:focus,
-    .data-info[tabindex]:hover {
+    /* Info tooltip visible on hover/focus/touch */
+    .data-info:focus,
+    .data-info:hover,
+    .data-info.is-open {
       position: relative;
     }
 
-    .data-info[tabindex]:focus::after,
-    .data-info[tabindex]:hover::after {
-      content: attr(aria-label);
+    .data-tooltip {
       position: absolute;
       top: 130%;
       left: 50%;
@@ -327,14 +338,52 @@
       width: max-content;
       max-width: 250px;
       z-index: 100;
-      pointer-events: none;
       line-height: 1.4;
+      text-align: left;
+      visibility: hidden
+    }
+
+    .data-info:hover + .data-tooltip,
+    .data-info:focus:not([data-dismissed="true"]) + .data-tooltip,
+    .data-info.is-open + .data-tooltip {
+      visibility: visible
+    }
+
+    .data-tooltip:focus-within {
+      visibility: visible
+    }
+
+    .data-tooltip {
+      pointer-events: none
+    }
+
+    .data-info.is-open + .data-tooltip {
+      pointer-events: auto
+    }
+
+    .data-info:focus-visible {
+      outline: 2px solid #1561a8;
+      outline-offset: 2px;
+    }
+
+    .data-option-label {
+      min-width: 0;
+      cursor: pointer
+    }
+
+    .data-option .data-info {
+      margin-left: 4px
+    }
+
+    .data-option .data-tooltip {
+      color: #fff
     }
 
     .data-header-content {
       display: flex;
       align-items: center;
-      gap: 8px
+      gap: 8px;
+      position: relative
     }
 
     .data-header-title {
@@ -402,6 +451,147 @@
 
     tbody tr:hover td.data {
       background: var(--data-hover)
+    }
+
+    @media (max-width: 1028px) {
+      .wrap {
+        overflow: visible;
+        max-height: none
+      }
+
+      table {
+        display: block;
+        min-width: 0
+      }
+
+      thead {
+        display: block;
+        position: static
+      }
+
+      thead tr:not(.data-controls) {
+        display: none
+      }
+
+      thead tr.data-controls,
+      thead tr.data-controls th,
+      thead tr.data-controls th > .data-controls-content {
+        display: block;
+        width: 100%
+      }
+
+      .data-controls-content {
+        max-width: none
+      }
+
+      .data-options {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch
+      }
+
+      .data-option {
+        flex: 0 0 auto;
+        min-width: 0
+      }
+
+      tbody {
+        display: block
+      }
+
+      tbody tr:not(#selection-hint-row) {
+        display: block;
+        margin: 12px 0;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: visible;
+        background: var(--card);
+        box-shadow: 0 1px 3px rgba(20, 40, 60, .08)
+      }
+
+      tbody tr#selection-hint-row {
+        display: block
+      }
+
+      tbody tr:not(#selection-hint-row) > td {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        border-bottom: 1px solid var(--line);
+        position: static;
+        text-align: left
+      }
+
+      tbody tr:not(#selection-hint-row) > td:last-child {
+        border-bottom: 0
+      }
+
+      tbody td.level-type {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        background: var(--head);
+        color: #fff;
+        border-radius: 9px 9px 0 0
+      }
+
+      tbody td.level-type .type-chips {
+        justify-content: flex-start;
+        margin-top: 0
+      }
+
+      tbody td.level-type .chip {
+        background: #fff;
+        color: var(--head)
+      }
+
+      tbody td.data-category {
+        display: none
+      }
+
+      tbody tr > td.data-category.is-visible {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        background: var(--data-bg)
+      }
+
+      tbody td.data-category.is-visible::before {
+        content: attr(data-label);
+        flex: 0 0 42%;
+        font-size: .88rem;
+        font-weight: 600;
+        color: var(--muted)
+      }
+
+      tbody td.garanties,
+      tbody td.perf {
+        min-height: 48px
+      }
+
+      tbody td.tool b::before {
+        content: "Outil : ";
+        font-weight: 600
+      }
+
+      tbody td.garanties::before {
+        content: "Garanties : ";
+        font-weight: 600
+      }
+
+      tbody td.perf::before {
+        content: "Performance : ";
+        font-weight: 600
+      }
+
+      tbody td.rem::before {
+        content: "Remarques : ";
+        font-weight: 600
+      }
+
+      .horizontal-scrollbar {
+        display: none !important
+      }
     }
 
     td.tool {
@@ -751,7 +941,7 @@
   <main>
     <div class="wrap">
       <table aria-describedby="table-legend">
-        <caption>Classement des outils LLM/IA selon le niveau de sensibilité des données qu'ils peuvent traiter
+        <caption class="sr-only">Classement des outils LLM/IA selon le niveau de sensibilité des données qu'ils peuvent traiter
         </caption>
         <thead>
           <tr class="data-controls">
@@ -822,10 +1012,12 @@
     function renderGauge(el) {
       const min = +el.dataset.min;
       const max = el.dataset.max ? +el.dataset.max : min;
-      const label = min === 0 ? 'Aucune garantie de sécurité sur 8 – usage déconseillé'
+      const gaugeLabel = el.dataset.label || 'Niveau de sécurité';
+      const label = min === 0
+        ? (gaugeLabel === 'Performance' ? 'Performance non applicable' : 'Aucune garantie de sécurité sur 8 – usage déconseillé')
         : (min === max
-          ? 'Niveau de sécurité : ' + min + ' sur 8'
-          : 'Niveau de sécurité : de ' + min + ' à ' + max + ' sur 8');
+          ? gaugeLabel + ' : ' + min + ' sur 8'
+          : gaugeLabel + ' : de ' + min + ' à ' + max + ' sur 8');
       el.setAttribute('role', 'img');
       el.setAttribute('aria-label', label);
       el.textContent = '';
@@ -937,7 +1129,7 @@
       const liveRegion = document.getElementById('aria-live-region');
       if (liveRegion && selectedCount > 0) {
         const checked = [...document.querySelectorAll('[data-category]:checked')]
-          .map(cb => cb.closest('label').textContent.trim());
+          .map(cb => cb.labels[0].textContent.trim());
         liveRegion.textContent = 'Colonnes affichées : ' + checked.join(', ') + '. ' + selectedCount + ' catégorie' + (selectedCount > 1 ? 's' : '') + ' sélectionnée' + (selectedCount > 1 ? 's' : '');
       } else if (liveRegion) {
         liveRegion.textContent = 'Aucune catégorie sélectionnée. Veuillez sélectionner au moins une catégorie de données pour afficher les résultats.';
@@ -950,6 +1142,20 @@
       .sort((left, right) => left.position - right.position);
     const dataOptions = document.querySelector('#data-options');
     const dataCategoryHeaders = document.querySelector('#data-category-headers');
+    const categoryIds = new Set(dataCategories.map((category) => category.id));
+    const categoryHash = new URLSearchParams(window.location.hash.slice(1));
+    const hasSharedCategories = categoryHash.has('cat');
+    const sharedCategories = new Set((categoryHash.get('cat') || '')
+      .split(',')
+      .filter((id) => categoryIds.has(id)));
+
+    function updateCategoryHash() {
+      const selected = [...document.querySelectorAll('[data-category]:checked')]
+        .map((checkbox) => checkbox.dataset.category)
+        .filter((id) => categoryIds.has(id));
+      const hash = '#cat=' + selected.join(',');
+      history.replaceState(null, '', window.location.pathname + window.location.search + hash);
+    }
 
     function rich(text) {
       const fragment = document.createDocumentFragment();
@@ -1031,6 +1237,7 @@
       gauge.className = 'gauge';
       gauge.dataset.min = value.min;
       if (value.max !== undefined) gauge.dataset.max = value.max;
+      gauge.dataset.label = parent.classList.contains('perf') ? 'Performance' : 'Niveau de sécurité';
       parent.append(gauge);
     }
 
@@ -1120,7 +1327,13 @@
 
         const performance = document.createElement('td');
         performance.className = 'perf';
-        if (niveau.performance.min !== undefined) appendGauge(performance, niveau.performance);
+        if (niveau.niveau === 8 && niveau.performance.min === 0) {
+          const notApplicable = document.createElement('span');
+          notApplicable.setAttribute('role', 'img');
+          notApplicable.setAttribute('aria-label', 'Performance non applicable');
+          notApplicable.textContent = '—';
+          performance.append(notApplicable);
+        } else if (niveau.performance.min !== undefined) appendGauge(performance, niveau.performance);
         else if (niveau.performance.texte) performance.append(rich(niveau.performance.texte));
         if (niveau.performance.note) {
           const note = document.createElement('span');
@@ -1134,6 +1347,7 @@
           const cell = document.createElement('td');
           cell.className = 'data data-category';
           cell.dataset.categoryCol = category.id;
+          cell.dataset.label = category.title;
           const usage = niveau.usages[category.id];
           if (usage) {
             const badge = document.createElement('span');
@@ -1200,31 +1414,39 @@
     dataCategories.forEach((category) => {
       const checkboxId = 'data-check-' + category.id;
 
-      const label = document.createElement('label');
-      label.className = 'data-option';
-      label.setAttribute('for', checkboxId);
+      const option = document.createElement('div');
+      option.className = 'data-option';
 
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.id = checkboxId;
       checkbox.dataset.category = category.id;
-      checkbox.checked = Boolean(category.checked);
-      label.append(checkbox);
+      checkbox.checked = hasSharedCategories
+        ? sharedCategories.has(category.id)
+        : Boolean(category.checked);
+      option.append(checkbox);
 
+      const label = document.createElement('label');
+      label.className = 'data-option-label';
+      label.setAttribute('for', checkboxId);
       const title = document.createElement('span');
       title.className = 'data-option-title';
       title.textContent = category.title;
-
-      const optionInfo = document.createElement('span');
-      optionInfo.className = 'data-info';
-      optionInfo.setAttribute('aria-label', category.description);
-      optionInfo.setAttribute('role', 'button');
-      optionInfo.setAttribute('tabindex', '0');
-      optionInfo.textContent = 'i';
-      title.append(optionInfo);
       label.append(title);
+      option.append(label);
 
-      dataOptions.append(label);
+      const optionInfo = document.createElement('button');
+      optionInfo.type = 'button';
+      optionInfo.className = 'data-info';
+      optionInfo.setAttribute('aria-describedby', 'data-tooltip-option-' + category.id);
+      optionInfo.textContent = 'i';
+      const optionTooltip = document.createElement('span');
+      optionTooltip.className = 'data-tooltip';
+      optionTooltip.id = 'data-tooltip-option-' + category.id;
+      optionTooltip.textContent = category.description;
+      option.append(optionInfo, optionTooltip);
+
+      dataOptions.append(option);
 
       const header = document.createElement('th');
       header.className = 'data';
@@ -1239,13 +1461,18 @@
       headerTitle.textContent = category.title;
       headerContent.append(headerTitle);
 
-      const headerInfo = document.createElement('span');
+      const headerInfo = document.createElement('button');
+      headerInfo.type = 'button';
       headerInfo.className = 'data-info';
-      headerInfo.setAttribute('aria-label', category.description);
-      headerInfo.setAttribute('role', 'button');
-      headerInfo.setAttribute('tabindex', '0');
+      headerInfo.setAttribute('aria-describedby', 'data-tooltip-header-' + category.id);
       headerInfo.textContent = 'i';
       headerContent.append(headerInfo);
+
+      const headerTooltip = document.createElement('span');
+      headerTooltip.className = 'data-tooltip';
+      headerTooltip.id = 'data-tooltip-header-' + category.id;
+      headerTooltip.textContent = category.description;
+      headerContent.append(headerTooltip);
 
       header.append(headerContent);
       dataCategoryHeaders.append(header);
@@ -1255,9 +1482,79 @@
     document.querySelectorAll('.gauge').forEach(renderGauge);
     document.querySelectorAll('.lvl').forEach(renderLevel);
     document.querySelectorAll('[data-category]').forEach((checkbox) => {
-      checkbox.addEventListener('change', updateDataColumns);
+      checkbox.addEventListener('change', () => {
+        updateDataColumns();
+        updateCategoryHash();
+      });
+    });
+    document.querySelectorAll('.data-info').forEach((button) => {
+      button.addEventListener('click', () => {
+        button.removeAttribute('data-dismissed');
+        const willOpen = !button.classList.contains('is-open');
+        document.querySelectorAll('.data-info.is-open').forEach((openButton) => {
+          openButton.classList.remove('is-open');
+          openButton.setAttribute('aria-expanded', 'false');
+        });
+        button.classList.toggle('is-open', willOpen);
+        button.setAttribute('aria-expanded', String(willOpen));
+      });
+      button.setAttribute('aria-expanded', 'false');
+    });
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      const openButton = document.querySelector('.data-info.is-open');
+      if (!openButton) return;
+      openButton.classList.remove('is-open');
+      openButton.setAttribute('aria-expanded', 'false');
+      openButton.setAttribute('data-dismissed', 'true');
+      event.stopPropagation();
     });
     updateDataColumns();
+
+    function abbreviateFirstOccurrences() {
+      const definitions = {
+        ESR: 'Enseignement supérieur et recherche',
+        ZRR: 'zone à régime restrictif',
+        DPO: 'délégué à la protection des données',
+        RGPD: 'Règlement général sur la protection des données',
+        LLM: 'Large Language Model'
+      };
+      const seen = new Set();
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+        acceptNode(node) {
+          return node.parentElement && node.parentElement.closest('script, style, template, .sr-only, .data-tooltip, [hidden]')
+            ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
+        }
+      });
+      const textNodes = [];
+      while (walker.nextNode()) textNodes.push(walker.currentNode);
+
+      textNodes.forEach((textNode) => {
+        const text = textNode.nodeValue;
+        const pattern = /\b(ESR|ZRR|DPO|RGPD|LLM)\b/g;
+        let match;
+        let last = 0;
+        let changed = false;
+        const fragment = document.createDocumentFragment();
+        while ((match = pattern.exec(text)) !== null) {
+          if (seen.has(match[1])) continue;
+          seen.add(match[1]);
+          if (match.index > last) fragment.append(text.slice(last, match.index));
+          const abbr = document.createElement('abbr');
+          abbr.title = definitions[match[1]];
+          abbr.textContent = match[1];
+          fragment.append(abbr);
+          last = pattern.lastIndex;
+          changed = true;
+        }
+        if (changed) {
+          if (last < text.length) fragment.append(text.slice(last));
+          textNode.replaceWith(fragment);
+        }
+      });
+    }
+
+    abbreviateFirstOccurrences();
   </script>
 </body>
 
