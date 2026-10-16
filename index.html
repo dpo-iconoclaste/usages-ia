@@ -724,6 +724,25 @@
     ]
   </script>
 
+  <!--
+    Schéma data-niveaux : un objet par niveau, avec niveau/types, outil (titre et contenu structuré),
+    garanties/performance (jauges ou texte), usages indexés par identifiant de catégorie
+    (statut, label, note, danger), remarques (paragraphes, texte riche, liens) et nombre de crânes.
+    Les contenus sont des données, jamais du HTML ; les nœuds de présentation sont décrits par type.
+  -->
+  <script type="application/json" id="data-niveaux">
+    [
+      {"niveau":1,"types":["Généraliste","Spécialisé"],"outil":{"titre":"LLM local sur le poste de travail","blocs":[{"classe":"d","texte":"Différents modèles et outils"},{"classe":"links","liens":[{"label":"GPT4All","url":"https://www.nomic.ai/gpt4all"},{"label":"Jan","url":"https://github.com/janhq/jan"},{"label":"LM Studio","url":"https://ai-explorer.io/blog/lm-studio-tutoriel-installation-utilisation/"}]}]},"garanties":{"min":4,"texte":" à ","max":8},"performance":{"texte":"Variable","note":"↗ en hausse"},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"plus","label":"Oui +"},"sensibles":{"statut":"plus","label":"Oui +"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"ok","label":"Oui"}},"remarques":"Encore embryonnaire, demande une machine solide et des compétences techniques ; amené à se développer.","remarques_liens":[{"label":"Guide d’installation en local","url":"https://ai-explorer.io/blog/installer-ia-en-local-guide-complet-2026/"}]},
+      {"niveau":2,"types":["Généraliste"],"outil":{"titre":"LLMs de l’ESR","blocs":[{"classe":"links","contenu":[{"texte":"chat.aristote.education","url":"https://chat.aristote.education/"},{"classe":"d","texte":"Différents modèles"}]},{"classe":"d","texte":"Propose une API pour fabriquer des applications spécialisées"}]},"garanties":{"min":7},"performance":{"min":2,"max":6,"note":"selon le modèle utilisé et le cas d’usage"},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"plus","label":"Oui +"},"sensibles":{"statut":"warn","label":"Éviter","note":"sauf validation juridique / DPO"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"ok","label":"Oui"}},"remarques":"Ne pas hésiter à comparer les modèles proposés, voire à demander l’ajout de nouveaux modèles."},
+      {"niveau":3,"types":["Spécialisé"],"outil":{"titre":"LLM spécialisé externe, fourni par l’établissement","paragraphes":[{"avant":"CentraleSupélec, ENS : ","lien":{"label":"Pigment","url":"https://www.pigment.com/fr"},"après":" (manipulation de données, visualisation, analyse) ;"},{"avant":"CentraleSupélec : ","lien":{"label":"Delos","url":"https://delos.so/fr"},"après":" (chat et intégration aux outils bureautiques) ;"},{"avant":"ENS : ","lien":{"label":"Dicte","url":"https://www.dicte.ai/fr-fr"},"après":" (transcriptions, CR)"}]},"garanties":{"min":5},"performance":{"min":5},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"warn","label":"A valider","note":"Habiliter l'usage avec le DPO"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"warn","label":"A valider","note":"Valider avec FSD"}},"remarques":["Outils généralement assez puissants, avec des garanties juridiques solides.","Conditions spéciales : par exemple recherche hospitalière."]},
+      {"niveau":4,"types":["Généraliste"],"outil":{"titre":"LLM généraliste externe, fourni par l’établissement","blocs":[{"classe":"d","lignes":["CNRS : Emmy (modèle : Mistral)","CentraleSupélec : pas encore d’outil","ENS : pas encore d’outil"]}]},"garanties":{"min":5},"performance":{"min":4,"max":6},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"no","label":"Non"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"warn","label":"A valider","note":"Valider avec FSD"}},"remarques":"Outils généralement assez puissants, avec des garanties juridiques solides."},
+      {"niveau":5,"types":["Généraliste"],"outil":{"titre":"LLM généraliste de la sphère publique","blocs":[{"classe":"links","contenu":[{"texte":"assistant.numerique.gouv.fr","url":"https://assistant.numerique.gouv.fr/"},{"texte":" "},{"classe":"d","texte":"Chat : Modèle Mistral"}]},{"classe":"d","contenu":[{"texte":"Propose l'"},{"texte":"API Albert","url":"https://ia.numerique.gouv.fr/outils-ia/albert-api/"},{"texte":" pour fabriquer des applications spécialisées"}]}]},"garanties":{"min":4},"performance":{"min":4,"max":6},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"no","label":"Non"},"recherche":{"statut":"no","label":"Non"},"zrr":{"statut":"no","label":"Non"}},"remarques":["Performances à évaluer dans le contexte.","Garanties juridiques standard, non adaptables au contexte."]},
+      {"niveau":6,"types":["Généraliste"],"outil":{"titre":"LLM majeur du marché avec contrat personnel de l’utilisateur","description":"OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, XAI / Grok…"},"garanties":{"min":2},"performance":{"min":8},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"no","label":"Non"},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":"Performants, mais cadre juridique très peu protecteur."},
+      {"niveau":7,"types":["Généraliste"],"outil":{"titre":"LLM majeur du marché sans contrat","description":"Usual suspects: OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, XAI / Grok…"},"garanties":{"min":1},"performance":{"min":8},"usages":{"anonymisees":{"statut":"warn","label":"En l’absence de toute autre solution"},"personnes":{"statut":"no","label":"Non","danger":true},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":["Performants.","Considérer que le cadre juridique n’existe pas = aucune garantie."]},
+      {"niveau":8,"types":["Généraliste","Spécialisé"],"outil":{"titre":"LLM mineur du marché avec ou sans contrat, Shadow IA"},"garanties":{"min":0},"performance":{"min":0},"usages":{"anonymisees":{"statut":"no","label":"Non","danger":true},"personnes":{"statut":"no","label":"Non","danger":true},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":["Par défaut, considérer que ce site aspirera toutes vos données. Sauf cas exceptionnel et validation de l’établissement.","Susceptible d'engager la responsabilité personnelle de l’utilisateur."],"skulls":3}
+    ]
+  </script>
+
   <header>
     <h1>Classes de LLM / IA et usages admissibles</h1>
     <p class="sub">Quel outil pour quel type de données ?</p>
@@ -745,7 +764,7 @@
             </th>
           </tr>
           <tr>
-            <th rowspan="2" class="c" scope="col">Niveau - Type</th>
+            <th rowspan="2" class="c" scope="col">Classe</th>
             <th rowspan="2" scope="col">Type d’outil</th>
             <th rowspan="2" scope="col">Garanties contre les risques<small>de type Fuite de données…</small></th>
             <th rowspan="2" scope="col">Performance</th>
@@ -754,250 +773,7 @@
           </tr>
           <tr id="data-category-headers"></tr>
         </thead>
-        <tbody>
-
-          <tr id="selection-hint-row">
-            <td class="selection-hint" colspan="10">Sélectionnez une ou plusieurs catégories de données</td>
-          </tr>
-
-          <tr>
-            <td class="c level-type" id="main-table">
-              <span class="lvl" data-level="1">1</span>
-              <div class="type-chips"><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></div>
-            </td>
-            <td class="tool"><b>LLM local sur le poste de travail</b>
-              <span class="d">Différents modèles et outils</span>
-              <div class="links"><a href="https://www.nomic.ai/gpt4all" target="_blank" rel="noopener">GPT4All</a><a
-                  href="https://github.com/janhq/jan" target="_blank" rel="noopener">Jan</a><a
-                  href="https://ai-explorer.io/blog/lm-studio-tutoriel-installation-utilisation/" target="_blank"
-                  rel="noopener">LLM Studio</a></div>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="4"></span> à <span class="gauge" data-min="8"></span>
-            </td>
-            <td class="perf">Variable<span class="note">↗ en hausse</span></td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b plus">Oui +</span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b plus">Oui +</span></td>
-            <td class="data data-category" data-category-col="recherche"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b ok">Oui</span></td>
-            <td class="rem">Encore embryonnaire, demande une machine solide et des compétences techniques&nbsp;; amené à
-              se
-              développer.
-              <div class="links"><a href="https://ai-explorer.io/blog/installer-ia-en-local-guide-complet-2026/"
-                  target="_blank" rel="noopener">Guide d’installation en local</a></div>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="c level-type">
-              <span class="lvl" data-level="2">2</span>
-              <div class="type-chips"><span class="chip">Généraliste</span></div>
-            </td>
-            <td class="tool"><b>LLMs de l’ESR</b>
-              <span class="links"><a href="https://chat.aristote.education/" target="_blank"
-                  rel="noopener">chat.aristote.education</a><span class="d">Différents modèles</span></span>
-              <span class="d">Propose une API pour fabriquer des applications spécialisées</span>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="7"></span></td>
-            <td class="perf">
-              <span class="gauge" data-min="2" data-max="6"></span>
-              <span class="note">selon le modèle utilisé et le cas d’usage</span>
-            </td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b plus">Oui +</span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b warn">Éviter</span><span
-                class="b-note">sauf validation juridique / DPO</span>
-            </td>
-            <td class="data data-category" data-category-col="recherche"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b ok">Oui</span></td>
-            <td class="rem">Ne pas hésiter à comparer les modèles proposés, voire à demander l’ajout de nouveaux
-              modèles.
-            </td>
-          </tr>
-
-          <tr>
-            <td class="c level-type">
-              <span class="lvl" data-level="3">3</span>
-              <div class="type-chips"><span class="chip">Spécialisé</span></div>
-            </td>
-            <td class="tool"><b>LLM spécialisé externe, fourni par l’établissement</b>
-              <p style="margin-top:6px" class="d">CentraleSupélec, ENS :
-                <a href="https://www.pigment.com/fr" target="_blank" rel="noopener">Pigment</a> (manipulation de
-                données,
-                visualisation, analyse)&nbsp;;
-              </p>
-              <p style="margin-top:6px" class="d">CentraleSupélec :
-                <a href="https://https://delos.so/fr" target="_blank" rel="noopener">Delos</a> (chat et intégration aux
-                outils bureautiques)&nbsp;;
-              </p>
-              <p style="margin-top:6px" class="d">ENS :
-                <a href="https://www.dicte.ai/fr-fr" target="_blank" rel="noopener">Dicte</a> (transcriptions, CR)
-              </p>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="5"></span></td>
-            <td class="perf"><span class="gauge" data-min="5"></span></td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b warn">A valider</span><span
-                class="b-note">Habiliter l'usage avec le DPO</span></td>
-            <td class="data data-category" data-category-col="recherche"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b warn">À valider</span><span
-                class="b-note">Valider avec FSD</span></td>
-            <td class="rem">
-              <p>Outils généralement assez puissants, avec des garanties juridiques solides.</p>
-              <p>Conditions spéciales : par exemple recherche hospitalière.</p>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="c level-type">
-              <span class="lvl" data-level="4">4</span>
-              <div class="type-chips"><span class="chip">Généraliste</span></div>
-            </td>
-            <td class="tool"><b>LLM généraliste externe, fourni par l’établissement</b>
-              <span class="d">CNRS : Emmy (modèle : Mistral)<br>CentraleSupélec : pas encore d’outil<br>ENS : pas encore
-                d’outil</span>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="5"></span></td>
-            <td class="perf"><span class="gauge" data-min="4" data-max="6"></span></td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b no">Non</span></td>
-            <td class="data data-category" data-category-col="recherche"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b warn">À valider</span><span
-                class="b-note">Valider avec FSD</span></td>
-            <td class="rem">Outils généralement assez puissants, avec des garanties juridiques solides.</td>
-          </tr>
-
-          <tr>
-            <td class="c level-type">
-              <span class="lvl" data-level="5">5</span>
-              <div class="type-chips"><span class="chip">Généraliste</span></div>
-            </td>
-            <td class="tool"><b>LLM généraliste de la sphère publique</b>
-              <span class="links"><a href="https://assistant.numerique.gouv.fr/" target="_blank"
-                  rel="noopener">assistant.numerique.gouv.fr</a> <span class="d">Chat : Modèle mistral</span></span>
-              <span class="d">Propose l'<a href="https://ia.numerique.gouv.fr/outils-ia/albert-api/" target="_blank"
-                  rel="noopener">API Albert</a> pour fabriquer des applications spécialisées</span>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="4"></span></td>
-            <td class="perf"><span class="gauge" data-min="4" data-max="6"></span></td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b no">Non</span></td>
-            <td class="data data-category" data-category-col="recherche"><span class="b no">Non</span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b no">Non</span></td>
-            <td class="rem">
-              <p>Performances à évaluer dans le contexte.</p>
-              <p>Garanties juridiques standard, non adaptables au contexte.</p>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="c level-type">
-              <span class="lvl" data-level="6">6</span>
-              <div class="type-chips"><span class="chip">Généraliste</span></div>
-            </td>
-            <td class="tool"><b>LLM majeur du marché avec contrat personnel de l’utilisateur</b>
-              <span class="d">OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, Xai / Grok…</span>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="2"></span></td>
-            <td class="perf"><span class="gauge" data-min="8"></span></td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b ok">Oui</span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b no">Non</span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="recherche"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b no danger">Non <svg class="skull-icon"
-                  aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="rem">Performants, mais cadre juridique très peu protecteur.</td>
-          </tr>
-
-          <tr>
-            <td class="c level-type">
-              <span class="lvl" data-level="7">7</span>
-              <div class="type-chips"><span class="chip">Généraliste</span></div>
-            </td>
-            <td class="tool"><b>LLM majeur du marché sans contrat</b>
-              <span class="d">Usual suspects: OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, Xai / Grok…</span>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="1"></span></td>
-            <td class="perf"><span class="gauge" data-min="8"></span></td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b warn">En l’absence de toute
-                autre solution</span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="recherche"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b no danger">Non <svg class="skull-icon"
-                  aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="rem">
-              <p>Performants.</p>
-              <p>Considérer que le cadre juridique n’existe pas = aucune garantie.</p>
-            </td>
-          </tr>
-
-          <tr>
-            <td class="c level-type">
-              <span class="lvl" data-level="8">8</span>
-              <div class="type-chips"><span class="chip">Généraliste</span><span class="chip">Spécialisé</span></div>
-            </td>
-            <td class="tool"><b>LLM mineur du marché avec ou sans contrat, Shadow IA</b>
-            </td>
-            <td class="garanties"><span class="gauge" data-min="0"></span></td>
-            <td class="perf"><span class="gauge" data-min="0"></span></td>
-            <td class="data data-category" data-category-col="anonymisees"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="personnes"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="sensibles"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="recherche"><span class="b no danger">Non <svg
-                  class="skull-icon" aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="data data-category" data-category-col="zrr"><span class="b no danger">Non <svg class="skull-icon"
-                  aria-hidden="true">
-                  <use href="#skull-crossbones-icon"></use>
-                </svg></span></td>
-            <td class="rem">
-              <svg class="skull-icon skull-icon-red" aria-hidden="true">
-                <use href="#skull-crossbones-icon"></use>
-              </svg><svg class="skull-icon skull-icon-red" aria-hidden="true">
-                <use href="#skull-crossbones-icon"></use>
-              </svg><svg class="skull-icon skull-icon-red" aria-hidden="true">
-                <use href="#skull-crossbones-icon"></use>
-              </svg>
-              Par défaut, considérer que ce site aspirera toutes vos données. Sauf cas exceptionnel et validation de
-              l’établissement.<br>
-              <strong>Susceptible d'engager la responsabilité personnelle de l’utilisateur.</strong>
-            </td>
-          </tr>
-
-        </tbody>
+        <tbody id="table-body"></tbody>
       </table>
     </div>
   </main>
@@ -1018,7 +794,7 @@
         </svg></span> = aucune garantie, usage interdit</span>
   </div>
 
-  <footer>Cas d’usage de l’IA – v 2.1 2026/10/02 – F. Thu, DPO CentraleSupélec et ENS Paris-Saclay,
+  <footer>Cas d’usage de l’IA – v 2.5 2026/10/02 – F. Thu, DPO CentraleSupélec et ENS Paris-Saclay,
     dpo@centralesupelec.fr</footer>
 
   <script>
@@ -1175,6 +951,252 @@
     const dataOptions = document.querySelector('#data-options');
     const dataCategoryHeaders = document.querySelector('#data-category-headers');
 
+    function rich(text) {
+      const fragment = document.createDocumentFragment();
+      const pattern = /\*\*([^*]+)\*\*|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g;
+      let last = 0;
+      let match;
+      const appendText = (value) => {
+        const lines = value.split('\n');
+        lines.forEach((line, index) => {
+          if (index) fragment.append(document.createElement('br'));
+          if (line) fragment.append(line);
+        });
+      };
+      while ((match = pattern.exec(text)) !== null) {
+        appendText(text.slice(last, match.index));
+        if (match[1] !== undefined) {
+          const strong = document.createElement('strong');
+          strong.textContent = match[1];
+          fragment.append(strong);
+        } else {
+          const link = document.createElement('a');
+          link.href = match[3];
+          link.target = '_blank';
+          link.rel = 'noopener';
+          link.textContent = match[2];
+          fragment.append(link);
+        }
+        last = pattern.lastIndex;
+      }
+      appendText(text.slice(last));
+      return fragment;
+    }
+
+    function appendContent(parent, parts) {
+      parts.forEach((part) => {
+        if (part.texte !== undefined) {
+          if (part.url && /^https?:\/\//.test(part.url)) {
+            appendLink(parent, part.texte, part.url);
+          } else {
+            parent.append(part.texte);
+          }
+        } else if (part.classe) {
+          const span = document.createElement('span');
+          span.className = part.classe;
+          if (part.lignes) {
+            part.lignes.forEach((line, index) => {
+              if (index) span.append(document.createElement('br'));
+              span.append(rich(line));
+            });
+          } else if (part.contenu) {
+            appendContent(span, part.contenu);
+          } else if (part.liens) {
+            part.liens.forEach((item) => {
+              appendLink(span, item.label, item.url);
+            });
+          } else {
+            span.append(rich(part.texte || ''));
+          }
+          parent.append(span);
+        }
+      });
+    }
+
+    function appendLink(parent, label, url) {
+      if (!/^https?:\/\//.test(url)) {
+        parent.append(label);
+        return;
+      }
+      const link = document.createElement('a');
+      link.href = url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = label;
+      parent.append(link);
+    }
+
+    function appendGauge(parent, value) {
+      const gauge = document.createElement('span');
+      gauge.className = 'gauge';
+      gauge.dataset.min = value.min;
+      if (value.max !== undefined) gauge.dataset.max = value.max;
+      parent.append(gauge);
+    }
+
+    function renderRows(niveaux) {
+      const tbody = document.querySelector('#table-body');
+      while (tbody.firstChild) tbody.removeChild(tbody.firstChild);
+      const hint = document.createElement('tr');
+      hint.id = 'selection-hint-row';
+      const hintCell = document.createElement('td');
+      hintCell.className = 'selection-hint';
+      hintCell.colSpan = dataCategories.length + 5;
+      hintCell.textContent = 'Sélectionnez une ou plusieurs catégories de données';
+      hint.append(hintCell);
+      tbody.append(hint);
+
+      niveaux.forEach((niveau, rowIndex) => {
+        const row = document.createElement('tr');
+        const levelCell = document.createElement('td');
+        levelCell.className = 'c level-type';
+        if (rowIndex === 0) levelCell.id = 'main-table';
+        const level = document.createElement('span');
+        level.className = 'lvl';
+        level.dataset.level = niveau.niveau;
+        level.textContent = niveau.niveau;
+        levelCell.append(level);
+        const chips = document.createElement('div');
+        chips.className = 'type-chips';
+        niveau.types.forEach((type) => {
+          const chip = document.createElement('span');
+          chip.className = 'chip';
+          chip.textContent = type;
+          chips.append(chip);
+        });
+        levelCell.append(chips);
+        row.append(levelCell);
+
+        const tool = document.createElement('td');
+        tool.className = 'tool';
+        const title = document.createElement('b');
+        title.textContent = niveau.outil.titre;
+        tool.append(title);
+        if (niveau.outil.description) {
+          const description = document.createElement('span');
+          description.className = 'd';
+          description.append(rich(niveau.outil.description));
+          tool.append(description);
+        }
+        (niveau.outil.blocs || []).forEach((block) => {
+          const element = block.classe === 'links' && niveau.niveau === 1
+            ? document.createElement('div') : document.createElement('span');
+          if (block.classe) element.className = block.classe;
+          if (block.lignes) {
+            block.lignes.forEach((line, index) => {
+              if (index) element.append(document.createElement('br'));
+              element.append(rich(line));
+            });
+          } else if (block.contenu) {
+            appendContent(element, block.contenu);
+          } else if (block.liens) {
+            block.liens.forEach((item) => {
+              appendLink(element, item.label, item.url);
+            });
+          } else {
+            element.append(rich(block.texte || ''));
+          }
+          tool.append(element);
+        });
+        (niveau.outil.paragraphes || []).forEach((paragraph) => {
+          const element = document.createElement('p');
+          element.style.marginTop = '6px';
+          element.className = 'd';
+          element.append(rich(paragraph.avant));
+          appendLink(element, paragraph.lien.label, paragraph.lien.url);
+          element.append(rich(paragraph.après));
+          tool.append(element);
+        });
+        row.append(tool);
+
+        const guarantees = document.createElement('td');
+        guarantees.className = 'garanties';
+        if (niveau.garanties.min !== undefined) appendGauge(guarantees, niveau.garanties);
+        if (niveau.garanties.texte) {
+          guarantees.append(niveau.garanties.texte);
+          appendGauge(guarantees, { min: niveau.garanties.max });
+        }
+        row.append(guarantees);
+
+        const performance = document.createElement('td');
+        performance.className = 'perf';
+        if (niveau.performance.min !== undefined) appendGauge(performance, niveau.performance);
+        else if (niveau.performance.texte) performance.append(rich(niveau.performance.texte));
+        if (niveau.performance.note) {
+          const note = document.createElement('span');
+          note.className = 'note';
+          note.append(rich(niveau.performance.note));
+          performance.append(note);
+        }
+        row.append(performance);
+
+        dataCategories.forEach((category) => {
+          const cell = document.createElement('td');
+          cell.className = 'data data-category';
+          cell.dataset.categoryCol = category.id;
+          const usage = niveau.usages[category.id];
+          if (usage) {
+            const badge = document.createElement('span');
+            badge.className = 'b ' + usage.statut + (usage.danger ? ' danger' : '');
+            badge.append(rich(usage.label));
+            if (usage.danger) {
+              const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+              icon.classList.add('skull-icon');
+              icon.setAttribute('aria-hidden', 'true');
+              const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+              use.setAttribute('href', '#skull-crossbones-icon');
+              icon.append(use);
+              badge.append(document.createTextNode(' '), icon);
+            }
+            cell.append(badge);
+            if (usage.note) {
+              const note = document.createElement('span');
+              note.className = 'b-note';
+              note.append(rich(usage.note));
+              cell.append(note);
+            }
+          }
+          row.append(cell);
+        });
+
+        const remarks = document.createElement('td');
+        remarks.className = 'rem';
+        for (let i = 0; i < (niveau.skulls || 0); i++) {
+          const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+          icon.classList.add('skull-icon', 'skull-icon-red');
+          icon.setAttribute('aria-hidden', 'true');
+          const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+          use.setAttribute('href', '#skull-crossbones-icon');
+          icon.append(use);
+          remarks.append(icon);
+        }
+        const paragraphs = Array.isArray(niveau.remarques) ? niveau.remarques : [niveau.remarques];
+        paragraphs.filter(Boolean).forEach((paragraph, index) => {
+          if (niveau.skulls && index === 0) remarks.append(' ');
+          if (niveau.skulls && index > 0) remarks.append(document.createElement('br'));
+          if (niveau.skulls && index === paragraphs.length - 1) {
+            const strong = document.createElement('strong');
+            strong.append(rich(paragraph));
+            remarks.append(strong);
+          } else if (!niveau.skulls && Array.isArray(niveau.remarques)) {
+            const paragraphElement = document.createElement('p');
+            paragraphElement.append(rich(paragraph));
+            remarks.append(paragraphElement);
+          } else {
+            remarks.append(rich(paragraph));
+          }
+        });
+        (niveau.remarques_liens || []).forEach((item) => {
+          const links = document.createElement('div');
+          links.className = 'links';
+          appendLink(links, item.label, item.url);
+          remarks.append(links);
+        });
+        row.append(remarks);
+        tbody.append(row);
+      });
+    }
+
     dataCategories.forEach((category) => {
       const checkboxId = 'data-check-' + category.id;
 
@@ -1229,6 +1251,7 @@
       dataCategoryHeaders.append(header);
     });
 
+    renderRows(JSON.parse(document.querySelector('#data-niveaux').textContent));
     document.querySelectorAll('.gauge').forEach(renderGauge);
     document.querySelectorAll('.lvl').forEach(renderLevel);
     document.querySelectorAll('[data-category]').forEach((checkbox) => {
