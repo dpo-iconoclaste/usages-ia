@@ -814,16 +814,35 @@
 
     .legend {
       margin-top: 16px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 28px;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+      column-gap: 28px;
+      row-gap: 8px;
       font-size: .88rem;
       color: var(--muted);
-      align-items: center
+      align-items: center;
+    }
+
+    .legend-title {
+      grid-row: span 2;
+      font-weight: 700;
+    }
+
+    .legend-items {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px 28px;
     }
 
     .legend .gauge {
       gap: 6px
+    }
+
+    .legend-range-note {
+      display: flex;
+      align-items: center;
+      gap: 10px
     }
 
     footer {
@@ -924,18 +943,18 @@
     [
       {"niveau":1,"types":["Généraliste","Spécialisé"],"outil":{"titre":"LLM local sur le poste de travail","blocs":[{"classe":"d","texte":"Différents modèles et outils"},{"classe":"links","liens":[{"label":"GPT4All","url":"https://www.nomic.ai/gpt4all"},{"label":"Jan","url":"https://github.com/janhq/jan"},{"label":"LM Studio","url":"https://ai-explorer.io/blog/lm-studio-tutoriel-installation-utilisation/"}]}]},"garanties":{"min":4,"texte":" à ","max":8},"performance":{"texte":"Variable","note":"↗ en hausse"},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"plus","label":"Oui +"},"sensibles":{"statut":"plus","label":"Oui +"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"ok","label":"Oui"}},"remarques":"Encore embryonnaire, demande une machine solide et des compétences techniques ; amené à se développer.","remarques_liens":[{"label":"Guide d’installation en local","url":"https://ai-explorer.io/blog/installer-ia-en-local-guide-complet-2026/"}]},
       {"niveau":2,"types":["Généraliste"],"outil":{"titre":"LLMs de l’ESR","blocs":[{"classe":"links","contenu":[{"texte":"chat.aristote.education","url":"https://chat.aristote.education/"},{"classe":"d","texte":"Différents modèles"}]},{"classe":"d","texte":"Propose une API pour fabriquer des applications spécialisées"}]},"garanties":{"min":7},"performance":{"min":2,"max":6,"note":"selon le modèle utilisé et le cas d’usage"},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"plus","label":"Oui +"},"sensibles":{"statut":"warn","label":"Éviter","note":"sauf validation juridique / DPO"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"ok","label":"Oui"}},"remarques":"Ne pas hésiter à comparer les modèles proposés, voire à demander l’ajout de nouveaux modèles."},
-      {"niveau":3,"types":["Spécialisé"],"outil":{"titre":"LLM spécialisé externe, fourni par l’établissement","paragraphes":[{"avant":"CentraleSupélec, ENS : ","lien":{"label":"Pigment","url":"https://www.pigment.com/fr"},"après":" (manipulation de données, visualisation, analyse) ;"},{"avant":"CentraleSupélec : ","lien":{"label":"Delos","url":"https://delos.so/fr"},"après":" (chat et intégration aux outils bureautiques) ;"},{"avant":"ENS : ","lien":{"label":"Dicte","url":"https://www.dicte.ai/fr-fr"},"après":" (transcriptions, CR)"}]},"garanties":{"min":5},"performance":{"min":5},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"warn","label":"A valider","note":"Habiliter l'usage avec le DPO"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"warn","label":"A valider","note":"Valider avec FSD"}},"remarques":["Outils généralement assez puissants, avec des garanties juridiques solides.","Conditions spéciales : par exemple recherche hospitalière."]},
-      {"niveau":4,"types":["Généraliste"],"outil":{"titre":"LLM généraliste externe, fourni par l’établissement","blocs":[{"classe":"d","lignes":["CNRS : Emmy (modèle : Mistral)","CentraleSupélec : pas encore d’outil","ENS : pas encore d’outil"]}]},"garanties":{"min":5},"performance":{"min":4,"max":6},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"no","label":"Non"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"warn","label":"A valider","note":"Valider avec FSD"}},"remarques":"Outils généralement assez puissants, avec des garanties juridiques solides."},
-      {"niveau":5,"types":["Généraliste"],"outil":{"titre":"LLM généraliste de la sphère publique","blocs":[{"classe":"links","contenu":[{"texte":"assistant.numerique.gouv.fr","url":"https://assistant.numerique.gouv.fr/"},{"texte":" "},{"classe":"d","texte":"Chat : Modèle Mistral"}]},{"classe":"d","contenu":[{"texte":"Propose l'"},{"texte":"API Albert","url":"https://ia.numerique.gouv.fr/outils-ia/albert-api/"},{"texte":" pour fabriquer des applications spécialisées"}]}]},"garanties":{"min":4},"performance":{"min":4,"max":6},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"no","label":"Non"},"recherche":{"statut":"no","label":"Non"},"zrr":{"statut":"no","label":"Non"}},"remarques":["Performances à évaluer dans le contexte.","Garanties juridiques standard, non adaptables au contexte."]},
-      {"niveau":6,"types":["Généraliste"],"outil":{"titre":"LLM majeur du marché avec contrat personnel de l’utilisateur","description":"OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, XAI / Grok…"},"garanties":{"min":2},"performance":{"min":8},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"no","label":"Non"},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":"Performants, mais cadre juridique très peu protecteur."},
-      {"niveau":7,"types":["Généraliste"],"outil":{"titre":"LLM majeur du marché sans contrat","description":"Usual suspects: OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, XAI / Grok…"},"garanties":{"min":1},"performance":{"min":8},"usages":{"anonymisees":{"statut":"warn","label":"En l’absence de toute autre solution"},"personnes":{"statut":"no","label":"Non","danger":true},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":["Performants.","Considérer que le cadre juridique n’existe pas = aucune garantie."]},
+      {"niveau":3,"types":["Spécialisé"],"outil":{"titre":"LLM spécialisé externe, fourni par l’établissement","paragraphes":[{"avant":"CentraleSupélec, ENS : ","lien":{"label":"Pigment","url":"https://www.pigment.com/fr"},"après":" (manipulation de données, visualisation, analyse) ;"},{"avant":"CentraleSupélec : ","lien":{"label":"Delos","url":"https://delos.so/fr"},"après":" (chat et intégration aux outils bureautiques) ;"},{"avant":"ENS : ","lien":{"label":"Dicte","url":"https://www.dicte.ai/fr-fr"},"après":" (transcriptions, CR)"}]},"garanties":{"min":5},"performance":{"min":5},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"warn","label":"A valider","note":"Habiliter l'usage avec le DPO"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"warn","label":"A valider","note":"Valider avec le FSD"}},"remarques":["Outils généralement assez puissants, avec des garanties juridiques solides.","Conditions spéciales : par exemple recherche hospitalière."]},
+      {"niveau":4,"types":["Généraliste"],"outil":{"titre":"LLM généraliste externe, fourni par l’établissement","blocs":[{"classe":"d","lignes":["CNRS : Emmy (modèle : Mistral)","CentraleSupélec : pas encore d’outil","ENS : pas encore d’outil"]}]},"garanties":{"min":5},"performance":{"min":4,"max":6},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"no","label":"Non"},"recherche":{"statut":"ok","label":"Oui"},"zrr":{"statut":"warn","label":"A valider","note":"Valider avec le FSD"}},"remarques":"Outils généralement assez puissants, avec des garanties juridiques solides."},
+      {"niveau":5,"types":["Généraliste"],"outil":{"titre":"LLM généraliste fourni par la sphère publique","blocs":[{"classe":"links","contenu":[{"texte":"assistant.numerique.gouv.fr","url":"https://assistant.numerique.gouv.fr/"},{"texte":" "},{"classe":"d","texte":"Chat : Modèle Mistral"}]},{"classe":"d","contenu":[{"texte":"Propose l'"},{"texte":"API Albert","url":"https://ia.numerique.gouv.fr/outils-ia/albert-api/"},{"texte":" pour fabriquer des applications spécialisées"}]}]},"garanties":{"min":4},"performance":{"min":4,"max":6},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"ok","label":"Oui"},"sensibles":{"statut":"no","label":"Non"},"recherche":{"statut":"no","label":"Non"},"zrr":{"statut":"no","label":"Non"}},"remarques":["Performances à évaluer dans le contexte.","Garanties juridiques standard, non adaptables au contexte."]},
+      {"niveau":6,"types":["Généraliste"],"outil":{"titre":"LLM majeur du marché payé par l’utilisateur","description":"OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, XAI / Grok, Mistral…"},"garanties":{"min":2},"performance":{"min":8},"usages":{"anonymisees":{"statut":"ok","label":"Oui"},"personnes":{"statut":"no","label":"Non"},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":"Performants, mais cadre juridique très peu protecteur."},
+      {"niveau":7,"types":["Généraliste"],"outil":{"titre":"LLM majeur du marché sans contrat","description":"OpenAI / ChatGPT, Anthropic / Claude, Google / Gemini, XAI / Grok, Mistral…"},"garanties":{"min":1},"performance":{"min":8},"usages":{"anonymisees":{"statut":"warn","label":"En l’absence de toute autre solution"},"personnes":{"statut":"no","label":"Non","danger":true},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":["Performants.","Considérer que le cadre juridique n’existe pas = aucune garantie."]},
       {"niveau":8,"types":["Généraliste","Spécialisé"],"outil":{"titre":"LLM mineur du marché avec ou sans contrat, Shadow IA"},"garanties":{"min":0},"performance":{"min":0},"usages":{"anonymisees":{"statut":"no","label":"Non","danger":true},"personnes":{"statut":"no","label":"Non","danger":true},"sensibles":{"statut":"no","label":"Non","danger":true},"recherche":{"statut":"no","label":"Non","danger":true},"zrr":{"statut":"no","label":"Non","danger":true}},"remarques":["Par défaut, considérer que ce site aspirera toutes vos données. Sauf cas exceptionnel et validation de l’établissement.","Susceptible d'engager la responsabilité personnelle de l’utilisateur."],"skulls":3}
     ]
   </script>
 
   <header>
     <h1>Classes de LLM / IA et usages admissibles</h1>
-    <p class="sub">Quel outil pour quel type de données ?</p>
+    <p class="sub">Quel outil pour quel type de données ? Contribution d'un DPO</p>
   </header>
 
   <main>
@@ -973,18 +992,22 @@
   </div>
 
   <div class="legend" id="table-legend">
-    <span>Jauges (sur 8) :</span>
-    <span class="gauge" data-min="2"></span>
-    <span class="gauge" data-min="5"></span>
-    <span class="gauge" data-min="8"></span>
-    <span class="gauge" data-min="3" data-max="6"></span>
-    <span>Segments hachurés = fourchette selon le modèle ou le cas d’usage</span>
-    <span><span class="skull"><svg class="skull-icon" aria-hidden="true">
-          <use href="#skull-crossbones-icon"></use>
-        </svg></span> = aucune garantie, usage interdit</span>
+    <strong class="legend-title">Jauges (sur 8) :</strong>
+    <div class="legend-items">
+      <span class="gauge" data-min="2"></span>
+      <span class="gauge" data-min="5"></span>
+      <span class="gauge" data-min="8"></span>
+      <span><span class="skull"><svg class="skull-icon" aria-hidden="true">
+        <use href="#skull-crossbones-icon"></use>
+      </svg></span> = aucune garantie, usage interdit</span>
+    </div>
+    <div class="legend-range-note">
+      <span class="gauge" data-min="3" data-max="6"></span>
+      <span>Segments hachurés = fourchette selon le modèle ou le cas d’usage</span>
+    </div>
   </div>
 
-  <footer>Cas d’usage de l’IA – v 2.5 2026/10/02 – F. Thu, DPO CentraleSupélec et ENS Paris-Saclay,
+  <footer>Cas d’usage de l’IA – v 2.5 2026/10/19 – F. Thu, DPO CentraleSupélec et ENS Paris-Saclay,
     dpo@centralesupelec.fr</footer>
 
   <script>
@@ -1514,15 +1537,15 @@
     function abbreviateFirstOccurrences() {
       const definitions = {
         ESR: 'Enseignement supérieur et recherche',
-        ZRR: 'zone à régime restrictif',
-        DPO: 'délégué à la protection des données',
+        ZRR: 'Zone à régime restrictif',
+        DPO: 'Délégué à la Protection des Données',
+        FSD: 'Fonctionnaire Sécurité Défense',
         RGPD: 'Règlement général sur la protection des données',
         LLM: 'Large Language Model'
       };
-      const seen = new Set();
       const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
         acceptNode(node) {
-          return node.parentElement && node.parentElement.closest('script, style, template, .sr-only, .data-tooltip, [hidden]')
+          return node.parentElement && node.parentElement.closest('abbr, script, style, template')
             ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT;
         }
       });
@@ -1531,14 +1554,12 @@
 
       textNodes.forEach((textNode) => {
         const text = textNode.nodeValue;
-        const pattern = /\b(ESR|ZRR|DPO|RGPD|LLM)\b/g;
+        const pattern = /\b(ESR|ZRR|DPO|FSD|RGPD|LLM)(?=\b|s\b)/g;
         let match;
         let last = 0;
         let changed = false;
         const fragment = document.createDocumentFragment();
         while ((match = pattern.exec(text)) !== null) {
-          if (seen.has(match[1])) continue;
-          seen.add(match[1]);
           if (match.index > last) fragment.append(text.slice(last, match.index));
           const abbr = document.createElement('abbr');
           abbr.title = definitions[match[1]];
